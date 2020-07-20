@@ -1,5 +1,4 @@
 import XCTest
-
 import SwiftUIChartsTests
 
 var tests = [XCTestCaseEntry]()
