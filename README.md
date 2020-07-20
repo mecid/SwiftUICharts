@@ -1,3 +1,3 @@
 # SwiftUICharts
 
-A description of this package.
+A simple line and bar charting library written in SwiftUI.
