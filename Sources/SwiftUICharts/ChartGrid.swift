@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ChartGrid: Shape {
-    let bars: [Bar]
+    let dataPoints: [DataPoint]
 
     func path(in rect: CGRect) -> Path {
         Path { path in
@@ -28,7 +28,7 @@ struct ChartGrid: Shape {
 #if DEBUG
 struct BarChartGrid_Previews: PreviewProvider {
     static var previews: some View {
-        ChartGrid(bars: Bar.mock)
+        ChartGrid(dataPoints: DataPoint.mock)
             .stroke(
                 style: StrokeStyle(
                     lineWidth: 1,

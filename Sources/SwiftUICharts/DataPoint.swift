@@ -1,5 +1,5 @@
 //
-//  Bar.swift
+//  DataPoint.swift
 //  CardioBot
 //
 //  Created by Majid Jabrayilov on 5/13/20.
@@ -31,7 +31,7 @@ extension Legend: Hashable {
     }
 }
 
-public struct Bar {
+public struct DataPoint {
     let value: Double
     let label: LocalizedStringKey
     let legend: Legend
@@ -45,22 +45,22 @@ public struct Bar {
     }
 }
 
-extension Bar: Hashable {
+extension DataPoint: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(legend)
         hasher.combine(value)
     }
 }
 
-extension Bar: Comparable {
-    public static func < (lhs: Bar, rhs: Bar) -> Bool {
+extension DataPoint: Comparable {
+    public static func < (lhs: DataPoint, rhs: DataPoint) -> Bool {
         lhs.value < rhs.value
     }
 }
 
 #if DEBUG
-extension Bar {
-    static var mock: [Bar] {
+extension DataPoint {
+    static var mock: [DataPoint] {
         let highIntensity = Legend(color: .orange, label: "High Intensity", order: 5)
         let buildFitness = Legend(color: .yellow, label: "Build Fitness", order: 4)
         let fatBurning = Legend(color: .green, label: "Fat Burning", order: 3)

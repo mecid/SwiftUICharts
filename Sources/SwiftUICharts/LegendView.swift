@@ -10,8 +10,8 @@ import SwiftUI
 struct LegendView: View {
     private let legends: [Legend]
 
-    init(bars: [Bar]) {
-        legends = Array(Set(bars.map { $0.legend })).sorted()
+    init(dataPoints: [DataPoint]) {
+        legends = Array(Set(dataPoints.map { $0.legend })).sorted()
     }
 
     var body: some View {
@@ -32,7 +32,7 @@ struct LegendView: View {
 #if DEBUG
 struct LegendView_Previews: PreviewProvider {
     static var previews: some View {
-        LegendView(bars: Bar.mock)
+        LegendView(dataPoints: DataPoint.mock)
     }
 }
 #endif

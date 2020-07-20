@@ -8,22 +8,22 @@
 import SwiftUI
 
 public struct BarChartView: View {
-    let bars: [Bar]
-    var limit: Bar?
+    let dataPoints: [DataPoint]
+    var limit: DataPoint?
     var showAxis = true
     var showLabels = true
     var labelCount = 3
     var showLegends = true
 
     public init(
-        bars: [Bar],
-        limit: Bar? = nil,
+        dataPoints: [DataPoint],
+        limit: DataPoint? = nil,
         showAxis: Bool = true,
         showLabels: Bool = true,
         labelCount: Int = 3,
         showLegends: Bool = true
     ) {
-        self.bars = bars
+        self.dataPoints = dataPoints
         self.limit = limit
         self.showAxis = showAxis
         self.showLabels = showLabels
@@ -34,21 +34,21 @@ public struct BarChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                BarsView(bars: bars, limit: limit)
+                BarsView(dataPoints: dataPoints, limit: limit)
 
                 if showAxis {
-                    AxisView(bars: bars)
+                    AxisView(dataPoints: dataPoints)
                         .fixedSize(horizontal: true, vertical: false)
                 }
             }
             #if os(iOS)
             if showLabels {
-                LabelsView(bars: bars, labelCount: labelCount)
+                LabelsView(dataPoints: dataPoints, labelCount: labelCount)
                     .accessibility(hidden: true)
             }
             #endif
             if showLegends {
-                LegendView(bars: limit.map { [$0] + bars} ?? bars)
+                LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)
                     .padding()
                     .accessibility(hidden: true)
             }
@@ -60,8 +60,8 @@ public struct BarChartView: View {
 struct BarChartView_Previews : PreviewProvider {
     static var previews: some View {
         let limit = Legend(color: .purple, label: "Trend")
-        let limitBar = Bar(value: 100, label: "Trend", legend: limit)
-        return BarChartView(bars: Bar.mock, limit: limitBar)
+        let limitBar = DataPoint(value: 100, label: "Trend", legend: limit)
+        return BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
     }
 }
 #endif

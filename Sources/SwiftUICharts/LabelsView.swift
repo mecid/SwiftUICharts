@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct LabelsView: View {
-    let bars: [Bar]
+    let dataPoints: [DataPoint]
     var labelCount = 3
 
     private var threshold: Int {
-        let threshold = bars.count / labelCount
+        let threshold = dataPoints.count / labelCount
 
         switch threshold {
         case 0...1: return 1
@@ -23,7 +23,7 @@ struct LabelsView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(bars.indexed(), id: \.1.self) { index, bar in
+            ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
                 if index % self.threshold == 0 {
                     Text(bar.label)
                         .multilineTextAlignment(.center)
@@ -39,7 +39,7 @@ struct LabelsView: View {
 #if DEBUG
 struct LabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelsView(bars: Bar.mock)
+        LabelsView(dataPoints: DataPoint.mock)
     }
 }
 #endif

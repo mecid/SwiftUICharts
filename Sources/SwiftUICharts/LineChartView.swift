@@ -8,14 +8,14 @@
 import SwiftUI
 
 public struct LineChartView: View {
-    let bars: [Bar]
+    let dataPoints: [DataPoint]
 
-    public init(bars: [Bar]) {
-        self.bars = bars
+    public init(dataPoints: [DataPoint]) {
+        self.dataPoints = dataPoints
     }
 
     private var gradient: LinearGradient {
-        let colors = bars.map(\.legend).map(\.color)
+        let colors = dataPoints.map(\.legend).map(\.color)
         return LinearGradient(
             gradient: Gradient(colors: colors),
             startPoint: .leading,
@@ -27,7 +27,7 @@ public struct LineChartView: View {
         VStack {
             HStack(spacing: 0) {
                 ZStack {
-                    ChartGrid(bars: bars)
+                    ChartGrid(dataPoints: dataPoints)
                         .stroke(
                             Color.secondary,
                             style: StrokeStyle(
@@ -39,31 +39,31 @@ public struct LineChartView: View {
                                 dashPhase: 1
                             )
                         )
-                    LineChart(bars: bars)
+                    LineChart(dataPoints: dataPoints)
                         .fill(gradient)
                         .frame(minHeight: 100)
                 }
-                AxisView(bars: bars)
+                AxisView(dataPoints: dataPoints)
             }
-            LabelsView(bars: bars)
-            LegendView(bars: bars)
+            LabelsView(dataPoints: dataPoints)
+            LegendView(dataPoints: dataPoints)
         }
     }
 }
 
 private struct LineChart: Shape {
-    let bars: [Bar]
+    let dataPoints: [DataPoint]
     var closePath: Bool = true
 
     func path(in rect: CGRect) -> Path {
         Path { path in
-            let start = CGFloat(bars.first?.value ?? 0) / CGFloat(bars.max()?.value ?? 1)
+            let start = CGFloat(dataPoints.first?.value ?? 0) / CGFloat(dataPoints.max()?.value ?? 1)
             path.move(to: CGPoint(x: 0, y: rect.height - rect.height * start))
-            let stepX = rect.width / CGFloat(bars.count)
+            let stepX = rect.width / CGFloat(dataPoints.count)
             var currentX: CGFloat = 0
-            bars.forEach {
+            dataPoints.forEach {
                 currentX += stepX
-                let y = CGFloat($0.value / (bars.max()?.value ?? 1)) * rect.height
+                let y = CGFloat($0.value / (dataPoints.max()?.value ?? 1)) * rect.height
                 path.addLine(to: CGPoint(x: currentX, y: rect.height - y))
             }
 
@@ -79,7 +79,7 @@ private struct LineChart: Shape {
 #if DEBUG
 struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartView(bars: Bar.mock)
+        LineChartView(dataPoints: DataPoint.mock)
     }
 }
 #endif

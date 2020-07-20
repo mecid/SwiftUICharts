@@ -8,17 +8,17 @@
 import SwiftUI
 
 public struct HorizontalBarChart: View {
-    let bars: [Bar]
+    let dataPoints: [DataPoint]
 
-    public init(bars: [Bar]) {
-        self.bars = bars
+    public init(dataPoints: [DataPoint]) {
+        self.dataPoints = dataPoints
     }
 
-    var max: Double { bars.max()?.value ?? 0}
+    var max: Double { dataPoints.max()?.value ?? 0}
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ForEach(bars, id: \.self) { bar in
+            ForEach(dataPoints, id: \.self) { bar in
                 HStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .foregroundColor(bar.legend.color)
@@ -43,16 +43,16 @@ struct HorizontalBarChart_Previews: PreviewProvider {
         let highResting = Legend(color: .orange, label: "High Resting")
         let elevated = Legend(color: .red, label: "Elevated")
 
-        let bars: [Bar] = [
-            Bar(value: 0.1, label: "10%", legend: veryLow),
-            Bar(value: 0.15, label: "15%", legend: low),
-            Bar(value: 0.60, label: "60%", legend: resting),
-            Bar(value: 0.1, label: "10%", legend: highResting),
-            Bar(value: 0.05, label: "5%", legend: elevated)
+        let dataPoints: [DataPoint] = [
+            DataPoint(value: 0.1, label: "10%", legend: veryLow),
+            DataPoint(value: 0.15, label: "15%", legend: low),
+            DataPoint(value: 0.60, label: "60%", legend: resting),
+            DataPoint(value: 0.1, label: "10%", legend: highResting),
+            DataPoint(value: 0.05, label: "5%", legend: elevated)
         ]
 
         return List {
-            return HorizontalBarChart(bars: bars)
+            return HorizontalBarChart(dataPoints: dataPoints)
         }
         .listStyle(InsetGroupedListStyle())
     }

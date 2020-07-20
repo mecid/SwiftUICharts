@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct AxisView: View {
-    let bars: [Bar]
+    let dataPoints: [DataPoint]
 
     var body: some View {
         VStack {
-            bars.max().map {
+            dataPoints.max().map {
                 Text(String(Int($0.value)))
                     .foregroundColor(.secondary)
                     .font(.caption)
             }
             Spacer()
-            bars.max().map {
+            dataPoints.max().map {
                 Text(String(Int($0.value / 2)))
                     .foregroundColor(.secondary)
                     .font(.caption)
@@ -31,7 +31,7 @@ struct AxisView: View {
 #if DEBUG
 struct AxisView_Previews: PreviewProvider {
     static var previews: some View {
-        AxisView(bars: Bar.mock)
+        AxisView(dataPoints: DataPoint.mock)
     }
 }
 #endif

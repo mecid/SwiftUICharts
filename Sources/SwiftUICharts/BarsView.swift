@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct BarsView: View {
-    let bars: [Bar]
-    let limit: Bar?
+    let dataPoints: [DataPoint]
+    let limit: DataPoint?
 
     private var max: Double {
-        if let max = bars.map({ $0.value }).max(), max > 0 {
+        if let max = dataPoints.map({ $0.value }).max(), max > 0 {
             return max
         } else {
             return 1
@@ -20,7 +20,7 @@ struct BarsView: View {
     }
 
     private var grid: some View {
-        ChartGrid(bars: bars)
+        ChartGrid(dataPoints: dataPoints)
             .stroke(
                 Color.secondary,
                 style: StrokeStyle(
@@ -38,8 +38,8 @@ struct BarsView: View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
                 grid
-                HStack(alignment: .bottom, spacing: bars.count > 30 ? 0 : 2) {
-                    ForEach(bars.filter(\.visible), id: \.self) { bar in
+                HStack(alignment: .bottom, spacing: dataPoints.count > 30 ? 0 : 2) {
+                    ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
                         Capsule()
                             .fill(bar.legend.color)
                             .accessibility(label: Text(bar.label))
@@ -70,7 +70,7 @@ struct BarsView: View {
 #if DEBUG
 struct BarsView_Previews: PreviewProvider {
     static var previews: some View {
-        BarsView(bars: Bar.mock, limit: nil)
+        BarsView(dataPoints: DataPoint.mock, limit: nil)
     }
 }
 #endif
