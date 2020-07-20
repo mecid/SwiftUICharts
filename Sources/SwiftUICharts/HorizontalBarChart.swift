@@ -51,9 +51,6 @@ struct HorizontalBarChart_Previews: PreviewProvider {
             DataPoint(value: 0.05, label: "5%", legend: elevated)
         ]
 
-        return List {
-            return HorizontalBarChart(dataPoints: dataPoints)
-        }
-        .listStyle(InsetGroupedListStyle())
+        return HorizontalBarChart(dataPoints: dataPoints)
     }
 }
