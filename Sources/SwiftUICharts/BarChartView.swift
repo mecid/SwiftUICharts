@@ -34,7 +34,7 @@ public struct BarChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                BarsView(dataPoints: dataPoints, limit: limit)
+                BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis)
 
                 if showAxis {
                     AxisView(dataPoints: dataPoints)

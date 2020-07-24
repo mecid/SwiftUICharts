@@ -10,6 +10,7 @@ import SwiftUI
 struct BarsView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
+    let showAxis: Bool
 
     private var max: Double {
         if let max = dataPoints.map({ $0.value }).max(), max > 0 {
@@ -37,8 +38,11 @@ struct BarsView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
-                grid
-                HStack(alignment: .bottom, spacing: dataPoints.count > 30 ? 0 : 2) {
+                if showAxis {
+                    grid
+                }
+
+                HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
                     ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
                         Capsule()
                             .fill(bar.legend.color)
@@ -70,7 +74,7 @@ struct BarsView: View {
 #if DEBUG
 struct BarsView_Previews: PreviewProvider {
     static var previews: some View {
-        BarsView(dataPoints: DataPoint.mock, limit: nil)
+        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: false)
     }
 }
 #endif
