@@ -9,9 +9,23 @@ import SwiftUI
 
 public struct LineChartView: View {
     let dataPoints: [DataPoint]
+    let showAxis: Bool
+    let showLabels: Bool
+    let labelCount: Int
+    let showLegends: Bool
 
-    public init(dataPoints: [DataPoint]) {
+    public init(
+        dataPoints: [DataPoint],
+        showAxis: Bool = true,
+        showLabels: Bool = true,
+        labelCount: Int = 3,
+        showLegends: Bool = true
+    ) {
         self.dataPoints = dataPoints
+        self.showAxis = showAxis
+        self.showLabels = showLabels
+        self.labelCount = labelCount
+        self.showLegends = showLegends
     }
 
     private var gradient: LinearGradient {
@@ -23,30 +37,46 @@ public struct LineChartView: View {
         )
     }
 
+    private var grid: some View {
+        ChartGrid(dataPoints: dataPoints)
+            .stroke(
+                Color.secondary,
+                style: StrokeStyle(
+                    lineWidth: 1,
+                    lineCap: .round,
+                    lineJoin: .round,
+                    miterLimit: 0,
+                    dash: [1, 8],
+                    dashPhase: 1
+                )
+            )
+    }
+
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
                 ZStack {
-                    ChartGrid(dataPoints: dataPoints)
-                        .stroke(
-                            Color.secondary,
-                            style: StrokeStyle(
-                                lineWidth: 1,
-                                lineCap: .round,
-                                lineJoin: .round,
-                                miterLimit: 0,
-                                dash: [1, 8],
-                                dashPhase: 1
-                            )
-                        )
+                    if showAxis {
+                        grid
+                    } else {
+                        grid.hidden()
+                    }
+
                     LineChart(dataPoints: dataPoints)
                         .fill(gradient)
                         .frame(minHeight: 100)
                 }
-                AxisView(dataPoints: dataPoints)
+                if showAxis {
+                    AxisView(dataPoints: dataPoints)
+                }
             }
-            LabelsView(dataPoints: dataPoints)
-            LegendView(dataPoints: dataPoints)
+            if showLabels {
+                LabelsView(dataPoints: dataPoints, labelCount: labelCount)
+            }
+
+            if showLegends {
+                LegendView(dataPoints: dataPoints)
+            }
         }
     }
 }

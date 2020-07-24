@@ -9,11 +9,11 @@ import SwiftUI
 
 public struct BarChartView: View {
     let dataPoints: [DataPoint]
-    var limit: DataPoint?
-    var showAxis = true
-    var showLabels = true
-    var labelCount = 3
-    var showLegends = true
+    let limit: DataPoint?
+    let showAxis: Bool
+    let showLabels: Bool
+    let labelCount: Int
+    let showLegends: Bool
 
     public init(
         dataPoints: [DataPoint],
