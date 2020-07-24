@@ -40,6 +40,8 @@ struct BarsView: View {
             ZStack(alignment: .bottomTrailing) {
                 if showAxis {
                     grid
+                } else {
+                    grid.hidden()
                 }
 
                 HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
