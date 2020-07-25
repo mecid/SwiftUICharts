@@ -64,9 +64,9 @@ struct BarsView: View {
                             .foregroundColor(.white)
                             .background(limit.legend.color)
                             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                    }.alignmentGuide(.bottom) {
+                        $0[.bottom] + CGFloat(limit.value / max) * geometry.size.height - $0.height / 2
                     }
-                    .alignmentGuide(VerticalAlignment.bottom) { $0[.bottom] - $0.height / 2 }
-                    .offset(y: CGFloat(limit.value / self.max) * -geometry.size.height)
                 }
             }
         }.frame(minHeight: 100)
