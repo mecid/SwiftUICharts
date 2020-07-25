@@ -41,12 +41,10 @@ public struct BarChartView: View {
                         .fixedSize(horizontal: true, vertical: false)
                 }
             }
-            #if os(iOS)
             if showLabels {
                 LabelsView(dataPoints: dataPoints, labelCount: labelCount)
                     .accessibility(hidden: true)
             }
-            #endif
             if showLegends {
                 LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)
                     .padding()
