@@ -63,10 +63,10 @@ struct BarsView: View {
                             .foregroundColor(.white)
                             .background(limit.legend.color)
                             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                    }.offset(y: CGFloat(limit.value / self.max) * -geometry.size.height)
+                    }.offset(y: CGFloat(limit.value / self.max) * geometry.size.height / -2)
                 }
             }
-        }.frame(minHeight: 100)
+        }
     }
 }
 
