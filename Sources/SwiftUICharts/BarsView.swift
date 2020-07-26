@@ -13,11 +13,10 @@ struct BarsView: View {
     let showAxis: Bool
 
     private var max: Double {
-        if let max = dataPoints.map({ $0.value }).max(), max > 0 {
-            return max
-        } else {
+        guard let max = dataPoints.max()?.value, max != 0 else {
             return 1
         }
+        return max
     }
 
     private var grid: some View {
@@ -64,9 +63,7 @@ struct BarsView: View {
                             .foregroundColor(.white)
                             .background(limit.legend.color)
                             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                    }.alignmentGuide(.bottom) {
-                        $0[.bottom] + CGFloat(limit.value / max) * geometry.size.height - $0.height / 2
-                    }
+                    }.offset(y: CGFloat(limit.value / self.max) * -geometry.size.height)
                 }
             }
         }.frame(minHeight: 100)
