@@ -9,9 +9,11 @@ import SwiftUI
 
 public struct HorizontalBarChart: View {
     let dataPoints: [DataPoint]
+    let barMaxWidth: CGFloat
 
-    public init(dataPoints: [DataPoint]) {
+    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
         self.dataPoints = dataPoints
+        self.barMaxWidth = barMaxWidth
     }
 
     var max: Double { dataPoints.max()?.value ?? 0}
@@ -22,7 +24,7 @@ public struct HorizontalBarChart: View {
                 HStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * 100, height: 16)
+                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
 
                     Circle()
                         .foregroundColor(bar.legend.color)
