@@ -10,6 +10,7 @@ import SwiftUI
 public struct BarChartView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
+    let barMinHeight: CGFloat
     let showAxis: Bool
     let showLabels: Bool
     let labelCount: Int
@@ -18,6 +19,7 @@ public struct BarChartView: View {
     public init(
         dataPoints: [DataPoint],
         limit: DataPoint? = nil,
+        barMinHeight: CGFloat = 100,
         showAxis: Bool = true,
         showLabels: Bool = true,
         labelCount: Int = 3,
@@ -25,6 +27,7 @@ public struct BarChartView: View {
     ) {
         self.dataPoints = dataPoints
         self.limit = limit
+        self.barMinHeight = barMinHeight
         self.showAxis = showAxis
         self.showLabels = showLabels
         self.labelCount = labelCount
@@ -35,6 +38,7 @@ public struct BarChartView: View {
         VStack {
             HStack(spacing: 0) {
                 BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis)
+                    .frame(minHeight: barMinHeight)
 
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
