@@ -12,13 +12,8 @@ struct LabelsView: View {
     var labelCount = 3
 
     private var threshold: Int {
-        let threshold = dataPoints.count / labelCount
-
-        switch threshold {
-        case 0...1: return 1
-        case 1...2: return 2
-        default: return threshold
-        }
+        let threshold = Double(dataPoints.count) / Double(labelCount)
+        return Int(threshold.rounded(.awayFromZero))
     }
 
     var body: some View {
