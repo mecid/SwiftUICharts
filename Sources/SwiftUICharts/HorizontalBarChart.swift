@@ -57,4 +57,5 @@ struct HorizontalBarChart_Previews: PreviewProvider {
         ]
 
         return HorizontalBarChart(dataPoints: dataPoints)
+    }
 }
