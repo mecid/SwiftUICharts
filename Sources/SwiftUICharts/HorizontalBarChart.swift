@@ -31,6 +31,9 @@ public struct HorizontalBarChart: View {
                         .frame(width: 8, height: 8)
 
                     Text(bar.legend.label) + Text(", ") + Text(bar.label)
+
+                    // TODO: temp fix
+                    Spacer()
                 }
             }
         }
@@ -54,5 +57,4 @@ struct HorizontalBarChart_Previews: PreviewProvider {
         ]
 
         return HorizontalBarChart(dataPoints: dataPoints)
-    }
 }
