@@ -36,7 +36,7 @@ struct BarChartGrid_Previews: PreviewProvider {
                     lineJoin: .round,
                     miterLimit: 0,
                     dash: [1, 8],
-                    dashPhase: 1
+                    dashPhase: 0
                 )
             )
     }
