@@ -29,7 +29,7 @@ struct BarsView: View {
                     lineJoin: .round,
                     miterLimit: 0,
                     dash: [1, 8],
-                    dashPhase: 1
+                    dashPhase: 0
                 )
             )
     }
@@ -73,7 +73,7 @@ struct BarsView: View {
 #if DEBUG
 struct BarsView_Previews: PreviewProvider {
     static var previews: some View {
-        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: false)
+        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: true)
     }
 }
 #endif
