@@ -21,6 +21,23 @@ public struct HorizontalBarChart: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             ForEach(dataPoints, id: \.self) { bar in
+                #if os(watchOS)
+                VStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .foregroundColor(bar.legend.color)
+                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
+                    HStack {
+                        Circle()
+                            .foregroundColor(bar.legend.color)
+                            .frame(width: 8, height: 8)
+
+                        Text(bar.legend.label) + Text(", ") + Text(bar.label)
+
+                        // TODO: temp fix
+                        Spacer()
+                    }
+                }
+                #else
                 HStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .foregroundColor(bar.legend.color)
@@ -35,6 +52,7 @@ public struct HorizontalBarChart: View {
                     // TODO: temp fix
                     Spacer()
                 }
+                #endif
             }
         }
     }
