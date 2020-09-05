@@ -43,17 +43,17 @@ public struct BarChartView: View {
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
                         .fixedSize(horizontal: true, vertical: false)
-                        .accessibility(hidden: true)
+                        .accessibilityHidden(true)
                 }
             }
             if showLabels {
                 LabelsView(dataPoints: dataPoints, labelCount: labelCount)
-                    .accessibility(hidden: true)
+                    .accessibilityHidden(true)
             }
             if showLegends {
                 LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)
                     .padding()
-                    .accessibility(hidden: true)
+                    .accessibilityHidden(true)
             }
         }
     }

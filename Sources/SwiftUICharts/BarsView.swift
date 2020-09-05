@@ -47,8 +47,8 @@ struct BarsView: View {
                     ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
                         Capsule(style: .continuous)
                             .fill(bar.legend.color)
-                            .accessibility(label: Text(bar.label))
-                            .accessibility(value: Text(bar.legend.label))
+                            .accessibilityLabel(Text(bar.label))
+                            .accessibilityValue(Text(bar.legend.label))
                             .frame(height: CGFloat(bar.value / self.max) * geometry.size.height)
                     }
                 }
