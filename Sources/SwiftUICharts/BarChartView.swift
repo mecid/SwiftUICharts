@@ -43,6 +43,7 @@ public struct BarChartView: View {
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
                         .fixedSize(horizontal: true, vertical: false)
+                        .accessibility(hidden: true)
                 }
             }
             if showLabels {

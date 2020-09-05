@@ -68,14 +68,17 @@ public struct LineChartView: View {
                 }
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
+                        .accessibility(hidden: true)
                 }
             }
             if showLabels {
                 LabelsView(dataPoints: dataPoints, labelCount: labelCount)
+                    .accessibility(hidden: true)
             }
 
             if showLegends {
                 LegendView(dataPoints: dataPoints)
+                    .accessibility(hidden: true)
             }
         }
     }
