@@ -32,9 +32,10 @@ extension Legend: Hashable {
 }
 
 public struct DataPoint {
-    let value: Double
-    let label: LocalizedStringKey
-    let legend: Legend
+    public let value: Double
+    public let label: LocalizedStringKey
+    public let legend: Legend
+    
     let visible: Bool
 
     public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
