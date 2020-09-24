@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct LineChartView: View {
     let dataPoints: [DataPoint]
+    let lineMinHeight: CGFloat
     let showAxis: Bool
     let showLabels: Bool
     let labelCount: Int
@@ -16,12 +17,14 @@ public struct LineChartView: View {
 
     public init(
         dataPoints: [DataPoint],
+        lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
         showLabels: Bool = true,
         labelCount: Int = 3,
         showLegends: Bool = true
     ) {
         self.dataPoints = dataPoints
+        self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
         self.showLabels = showLabels
         self.labelCount = labelCount
@@ -62,9 +65,9 @@ public struct LineChartView: View {
                         grid.hidden()
                     }
 
-                    LineChart(dataPoints: dataPoints)
+                    LineChartShape(dataPoints: dataPoints)
                         .fill(gradient)
-                        .frame(minHeight: 100)
+                        .frame(minHeight: lineMinHeight)
                 }
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
@@ -79,31 +82,6 @@ public struct LineChartView: View {
             if showLegends {
                 LegendView(dataPoints: dataPoints)
                     .accessibilityHidden(true)
-            }
-        }
-    }
-}
-
-private struct LineChart: Shape {
-    let dataPoints: [DataPoint]
-    var closePath: Bool = true
-
-    func path(in rect: CGRect) -> Path {
-        Path { path in
-            let start = CGFloat(dataPoints.first?.value ?? 0) / CGFloat(dataPoints.max()?.value ?? 1)
-            path.move(to: CGPoint(x: 0, y: rect.height - rect.height * start))
-            let stepX = rect.width / CGFloat(dataPoints.count)
-            var currentX: CGFloat = 0
-            dataPoints.forEach {
-                currentX += stepX
-                let y = CGFloat($0.value / (dataPoints.max()?.value ?? 1)) * rect.height
-                path.addLine(to: CGPoint(x: currentX, y: rect.height - y))
-            }
-
-            if closePath {
-                path.addLine(to: CGPoint(x: currentX, y: rect.height))
-                path.addLine(to: CGPoint(x: 0, y: rect.height))
-                path.closeSubpath()
             }
         }
     }
