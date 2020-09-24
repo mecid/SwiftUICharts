@@ -7,10 +7,18 @@
 //
 import SwiftUI
 
+/// SwiftUI view that draws bars by placing them into a vertical container.
 public struct HorizontalBarChart: View {
     let dataPoints: [DataPoint]
     let barMaxWidth: CGFloat
 
+    /**
+     Creates new horizontal bar chart with the following parameters.
+
+     - Parameters:
+        - dataPoints: The array of data points that will be used to draw the bar chart.
+        - barMaxWidth: The maximal width for the bar that presents the biggest value. Default is 100.
+     */
     public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
         self.dataPoints = dataPoints
         self.barMaxWidth = barMaxWidth

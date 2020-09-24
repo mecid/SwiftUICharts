@@ -7,6 +7,7 @@
 //
 import SwiftUI
 
+/// SwiftUI view that draws bars by placing them into a horizontal container.
 public struct BarChartView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
@@ -16,6 +17,18 @@ public struct BarChartView: View {
     let labelCount: Int
     let showLegends: Bool
 
+    /**
+     Creates new bar chart view with the following parameters.
+
+     - Parameters:
+        - dataPoints: The array of data points that will be used to draw the bar chart.
+        - limit: The horizontal line that will be drawn over bars. Default is nil.
+        - barMinHeight: The minimal height for the bar that presents the biggest value. Default is 100.
+        - showAxis: Bool value that controls whenever to show axis.
+        - showLabels: Bool value that controls whenever to show labels.
+        - labelCount: The count of labels that should be shown below the chart.
+        - showLegends: Bool value that controls whenever to show legends.
+     */
     public init(
         dataPoints: [DataPoint],
         limit: DataPoint? = nil,

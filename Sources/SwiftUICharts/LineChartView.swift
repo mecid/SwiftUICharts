@@ -7,6 +7,7 @@
 //
 import SwiftUI
 
+/// SwiftUI view that draws data points by drawing a line.
 public struct LineChartView: View {
     let dataPoints: [DataPoint]
     let lineMinHeight: CGFloat
@@ -15,6 +16,17 @@ public struct LineChartView: View {
     let labelCount: Int
     let showLegends: Bool
 
+    /**
+     Creates new line chart view with the following parameters.
+
+     - Parameters:
+        - dataPoints: The array of data points that will be used to draw the bar chart.
+        - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
+        - showAxis: Bool value that controls whenever to show axis.
+        - showLabels: Bool value that controls whenever to show labels.
+        - labelCount: The count of labels that should be shown below the the chart.
+        - showLegends: Bool value that controls whenever to show legends.
+     */
     public init(
         dataPoints: [DataPoint],
         lineMinHeight: CGFloat = 100,

@@ -7,11 +7,20 @@
 //
 import SwiftUI
 
+/// The type that describes the group of data points in the chart.
 public struct Legend {
     let color: Color
     let label: LocalizedStringKey
     let order: Int
 
+    /**
+     Creates new legend with the following parameters.
+
+     - Parameters:
+        - color: The color of the group that will be used to draw data points.
+        - label: LocalizedStringKey that describes the legend.
+        - order: The number that will be used to sort chart legends list. Default value is 0.
+     */
     public init(color: Color, label: LocalizedStringKey, order: Int = 0) {
         self.color = color
         self.label = label
@@ -31,12 +40,22 @@ extension Legend: Hashable {
     }
 }
 
+/// The type that describes a data point in the chart.
 public struct DataPoint {
     public let value: Double
     public let label: LocalizedStringKey
     public let legend: Legend
     public let visible: Bool
 
+    /**
+     Creates new data point with the following parameters.
+
+     - Parameters:
+        - value: Double that represents a value of the point in the chart.
+        - label: LocalizedStringKey that describes the point.
+        - legend: The legend of data point, usually appears below the chart.
+        - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
+     */
     public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
         self.value = value
         self.label = label
