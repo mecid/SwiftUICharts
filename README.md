@@ -92,4 +92,4 @@ Add this Swift package in Xcode using its Github repository url. (File > Swift P
 Majid Jabrayilov: cmecid@gmail.com
 
 ## License
-UIKitSwiftDSL is available under the MIT license. See the LICENSE file for more info.
+SwiftUICharts is available under the MIT license. See the LICENSE file for more info.
