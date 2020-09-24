@@ -16,7 +16,12 @@ public struct HorizontalBarChart: View {
         self.barMaxWidth = barMaxWidth
     }
 
-    var max: Double { dataPoints.max()?.value ?? 0}
+    private var max: Double {
+        guard let max = dataPoints.max()?.value, max != 0 else {
+            return 1
+        }
+        return max
+    }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {

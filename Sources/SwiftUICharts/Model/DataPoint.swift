@@ -35,8 +35,7 @@ public struct DataPoint {
     public let value: Double
     public let label: LocalizedStringKey
     public let legend: Legend
-    
-    let visible: Bool
+    public let visible: Bool
 
     public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
         self.value = value

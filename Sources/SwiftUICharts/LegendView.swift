@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LegendView: View {
-    private let legends: [Legend]
+    let legends: [Legend]
 
     init(dataPoints: [DataPoint]) {
         legends = Array(Set(dataPoints.map { $0.legend })).sorted()
