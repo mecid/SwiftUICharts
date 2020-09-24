@@ -1,5 +1,6 @@
 # SwiftUICharts
 A simple line and bar charting library written in SwiftUI.
+<img src="screenshots.png"/>
 
 ## Usage
 
