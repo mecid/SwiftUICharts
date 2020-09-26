@@ -41,7 +41,7 @@ let points: [DataPoint] = [
     .init(value: 158, label: "24", legend: highIntensity),
 ] 
 
-BarsView(dataPoints: points, limit: limit)
+BarChartView(dataPoints: points, limit: limit)
 ```
 
 ### Horizontal bar chart
@@ -82,7 +82,7 @@ let points: [DataPoint] = [
     .init(value: 150, label: "13", legend: buildFitness)
 ]
 
-LineChartView(dataPoints: dataPoints)
+LineChartView(dataPoints: points)
 ```
 
 ## Installation
