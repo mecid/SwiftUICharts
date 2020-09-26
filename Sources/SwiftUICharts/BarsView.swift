@@ -7,10 +7,23 @@
 //
 import SwiftUI
 
-struct BarsView: View {
+public struct BarsView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
     let showAxis: Bool
+    
+    /**
+      Creates new horizontal bar chart with the following parameters.
+
+      - Parameters:
+         - dataPoints: The array of data points that will be used to draw the bar chart.
+         - limit: The limit indicator that will be used to draw a horizontal line in the bar chart.
+         - showAxis: Show or hide the horizontal and vertical axis in the bar chart.
+     */
+    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
+        self.dataPoints = dataPoints
+        self.barMaxWidth = barMaxWidth
+    }
 
     private var max: Double {
         guard let max = dataPoints.max()?.value, max != 0 else {
@@ -34,7 +47,7 @@ struct BarsView: View {
             )
     }
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
                 if showAxis {
