@@ -20,9 +20,10 @@ public struct BarsView: View {
          - limit: The limit indicator that will be used to draw a horizontal line in the bar chart.
          - showAxis: Show or hide the horizontal and vertical axis in the bar chart.
      */
-    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
+    public init(dataPoints: [DataPoint], limit: DataPoint?, showAxis: Bool) {
         self.dataPoints = dataPoints
-        self.barMaxWidth = barMaxWidth
+        self.limit = limit
+        self.showAxis = showAxis
     }
 
     private var max: Double {
