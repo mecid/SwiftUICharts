@@ -56,7 +56,7 @@ let points: [DataPoint] = [
     .init(value: 92, label: "4", legend: warmUp)
 ] 
 
-HorizontalBarChart(dataPoints: points)
+HorizontalBarChartView(dataPoints: points)
 ```
 
 ### Line chart
