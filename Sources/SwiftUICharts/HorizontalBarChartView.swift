@@ -1,5 +1,5 @@
 //
-//  HorizontalBarChart.swift
+//  HorizontalBarChartView.swift
 //  CardioBot
 //
 //  Created by Majid Jabrayilov on 5/12/20.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// SwiftUI view that draws bars by placing them into a vertical container.
-public struct HorizontalBarChart: View {
+public struct HorizontalBarChartView: View {
     let dataPoints: [DataPoint]
     let barMaxWidth: CGFloat
 
@@ -87,6 +87,6 @@ struct HorizontalBarChart_Previews: PreviewProvider {
             DataPoint(value: 0.05, label: "5%", legend: elevated)
         ]
 
-        return HorizontalBarChart(dataPoints: dataPoints)
+        return HorizontalBarChartView(dataPoints: dataPoints)
     }
 }
