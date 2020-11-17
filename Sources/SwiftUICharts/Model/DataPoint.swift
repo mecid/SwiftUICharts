@@ -8,10 +8,11 @@
 import SwiftUI
 
 /// The type that describes the group of data points in the chart.
-public struct Legend {
-    let color: Color
-    let label: LocalizedStringKey
-    let order: Int
+public struct Legend: Identifiable {
+    public let id: UUID = .init()
+    public let color: Color
+    public let label: LocalizedStringKey
+    public let order: Int
 
     /**
      Creates new legend with the following parameters.
@@ -41,7 +42,8 @@ extension Legend: Hashable {
 }
 
 /// The type that describes a data point in the chart.
-public struct DataPoint {
+public struct DataPoint: Identifiable {
+    public let id: UUID = .init()
     public let value: Double
     public let label: LocalizedStringKey
     public let legend: Legend
