@@ -12,6 +12,7 @@ public struct LineChartView: View {
     let dataPoints: [DataPoint]
     let lineMinHeight: CGFloat
     let showAxis: Bool
+    let axisColor: Color
     let showLabels: Bool
     let labelCount: Int
     let showLegends: Bool
@@ -31,6 +32,7 @@ public struct LineChartView: View {
         dataPoints: [DataPoint],
         lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
+        axisColor: Color = .secondary,
         showLabels: Bool = true,
         labelCount: Int = 3,
         showLegends: Bool = true
@@ -38,6 +40,7 @@ public struct LineChartView: View {
         self.dataPoints = dataPoints
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
+        self.axisColor = axisColor
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
@@ -55,7 +58,7 @@ public struct LineChartView: View {
     private var grid: some View {
         ChartGrid(dataPoints: dataPoints)
             .stroke(
-                Color.secondary,
+                axisColor,
                 style: StrokeStyle(
                     lineWidth: 1,
                     lineCap: .round,
@@ -82,12 +85,12 @@ public struct LineChartView: View {
                         .frame(minHeight: lineMinHeight)
                 }
                 if showAxis {
-                    AxisView(dataPoints: dataPoints)
+                    AxisView(dataPoints: dataPoints, axisColor: axisColor)
                         .accessibilityHidden(true)
                 }
             }
             if showLabels {
-                LabelsView(dataPoints: dataPoints, labelCount: labelCount)
+                LabelsView(dataPoints: dataPoints, axisColor: axisColor, labelCount: labelCount)
                     .accessibilityHidden(true)
             }
 
