@@ -10,6 +10,8 @@ import SwiftUI
 struct LabelsView: View {
     let dataPoints: [DataPoint]
     let axisColor: Color
+    let padding: CGFloat
+    
     var labelCount = 3
 
     private var threshold: Int {
@@ -25,6 +27,8 @@ struct LabelsView: View {
                         .multilineTextAlignment(.center)
                         .foregroundColor(axisColor)
                         .font(.caption)
+                        .padding(.top, padding)
+                        .rotationEffect(.degrees(-45))
                     Spacer()
                 }
             }
@@ -35,7 +39,7 @@ struct LabelsView: View {
 #if DEBUG
 struct LabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelsView(dataPoints: DataPoint.mock, axisColor: .secondary)
+        LabelsView(dataPoints: DataPoint.mock, axisColor: .secondary, padding: 0)
     }
 }
 #endif

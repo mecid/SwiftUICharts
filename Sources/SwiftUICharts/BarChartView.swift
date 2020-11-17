@@ -14,6 +14,7 @@ public struct BarChartView: View {
     let barMinHeight: CGFloat
     let showAxis: Bool
     let axisColor: Color
+    let axisLeadingPadding: CGFloat
     let showLabels: Bool
     let labelCount: Int?
     let showLegends: Bool
@@ -27,6 +28,7 @@ public struct BarChartView: View {
         - barMinHeight: The minimal height for the bar that presents the biggest value. Default is 100.
         - showAxis: Bool value that controls whenever to show axis.
         - axisColor: Axis and labels color. Default is `.secondary`
+        - axisLeadingPadding: Leading padding value for axis.        
         - showLabels: Bool value that controls whenever to show labels.
         - labelCount: The count of labels that should be shown below the chart. Default is dataPoints.count unless you specify a value.
         - showLegends: Bool value that controls whenever to show legends.
@@ -37,6 +39,7 @@ public struct BarChartView: View {
         barMinHeight: CGFloat = 100,
         showAxis: Bool = true,
         axisColor: Color = .secondary,
+        axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
         showLegends: Bool = true
@@ -46,6 +49,7 @@ public struct BarChartView: View {
         self.barMinHeight = barMinHeight
         self.showAxis = showAxis
         self.axisColor = axisColor
+        self.axisLeadingPadding = axisLeadingPadding
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
@@ -59,12 +63,16 @@ public struct BarChartView: View {
 
                 if showAxis {
                     AxisView(dataPoints: dataPoints, axisColor: axisColor)
+                        .padding(.leading, axisLeadingPadding)
                         .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
                 }
             }
             if showLabels {
-                LabelsView(dataPoints: dataPoints, axisColor: axisColor, labelCount: labelCount ?? dataPoints.count)
+                LabelsView(dataPoints: dataPoints,
+                           axisColor: axisColor,
+                           padding: axisLeadingPadding,
+                           labelCount: labelCount ?? dataPoints.count)
                     .accessibilityHidden(true)
             }
             if showLegends {
