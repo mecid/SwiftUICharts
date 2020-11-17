@@ -28,7 +28,6 @@ struct LabelsView: View {
                         .foregroundColor(axisColor)
                         .font(.caption)
                         .padding(.top, padding)
-                        .rotationEffect(.degrees(-45))
                     Spacer()
                 }
             }
