@@ -33,7 +33,7 @@ public struct HorizontalBarChartView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ForEach(dataPoints, id: \.self) { bar in
+            ForEach(dataPoints) { bar in
                 #if os(watchOS)
                 VStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
