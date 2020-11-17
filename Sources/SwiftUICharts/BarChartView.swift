@@ -15,7 +15,7 @@ public struct BarChartView: View {
     let showAxis: Bool
     let axisColor: Color
     let showLabels: Bool
-    let labelCount: Int
+    let labelCount: Int?
     let showLegends: Bool
 
     /**
@@ -37,7 +37,7 @@ public struct BarChartView: View {
         showAxis: Bool = true,
         axisColor: Color = .secondary,
         showLabels: Bool = true,
-        labelCount: Int = 3,
+        labelCount: Int? = nil,
         showLegends: Bool = true
     ) {
         self.dataPoints = dataPoints
@@ -63,7 +63,7 @@ public struct BarChartView: View {
                 }
             }
             if showLabels {
-                LabelsView(dataPoints: dataPoints, axisColor: axisColor, labelCount: labelCount)
+                LabelsView(dataPoints: dataPoints, axisColor: axisColor, labelCount: labelCount ?? dataPoints.count)
                     .accessibilityHidden(true)
             }
             if showLegends {
