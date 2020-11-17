@@ -20,7 +20,7 @@ struct LabelsView: View {
     var body: some View {
         HStack(spacing: 0) {
             ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
-                if index % self.threshold == 0 {
+                if index % threshold == 0 {
                     Text(bar.label)
                         .multilineTextAlignment(.center)
                         .foregroundColor(axisColor)

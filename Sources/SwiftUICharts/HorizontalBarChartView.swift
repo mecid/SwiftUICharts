@@ -38,7 +38,7 @@ public struct HorizontalBarChartView: View {
                 VStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
+                        .frame(width: CGFloat(bar.value / max) * barMaxWidth, height: 16)
                     HStack {
                         Circle()
                             .foregroundColor(bar.legend.color)
@@ -54,7 +54,7 @@ public struct HorizontalBarChartView: View {
                 HStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
+                        .frame(width: CGFloat(bar.value / max) * barMaxWidth, height: 16)
 
                     Circle()
                         .foregroundColor(bar.legend.color)
