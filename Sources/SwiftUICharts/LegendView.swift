@@ -16,7 +16,7 @@ struct LegendView: View {
 
     var body: some View {
         LazyVGrid(columns: [.init(.adaptive(minimum: 100))], alignment: .leading) {
-            ForEach(legends, id: \.color) { legend in
+            ForEach(legends) { legend in
                 HStack(alignment: .center) {
                     Circle()
                         .fill(legend.color)

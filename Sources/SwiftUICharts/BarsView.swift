@@ -44,7 +44,7 @@ struct BarsView: View {
                 }
 
                 HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
-                    ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
+                    ForEach(dataPoints.filter(\.visible)) { bar in
                         Capsule(style: .continuous)
                             .fill(bar.legend.color)
                             .accessibilityLabel(Text(bar.label))
