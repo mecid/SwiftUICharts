@@ -11,6 +11,7 @@ struct BarsView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
     let showAxis: Bool
+    let axisColor: Color
 
     private var max: Double {
         guard let max = dataPoints.max()?.value, max != 0 else {
@@ -22,7 +23,7 @@ struct BarsView: View {
     private var grid: some View {
         ChartGrid(dataPoints: dataPoints)
             .stroke(
-                Color.secondary,
+                axisColor,
                 style: StrokeStyle(
                     lineWidth: 1,
                     lineCap: .round,
@@ -73,7 +74,7 @@ struct BarsView: View {
 #if DEBUG
 struct BarsView_Previews: PreviewProvider {
     static var previews: some View {
-        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: true)
+        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: true, axisColor: .secondary)
     }
 }
 #endif
