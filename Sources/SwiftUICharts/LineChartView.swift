@@ -15,21 +15,22 @@ public struct LineChartView: View {
     let axisColor: Color
     let axisLeadingPadding: CGFloat
     let showLabels: Bool
-    let labelCount: Int
+    let labelCount: Int?
     let showLegends: Bool
 
     /**
      Creates new line chart view with the following parameters.
 
      - Parameters:
-        - dataPoints: The array of data points that will be used to draw the bar chart.
-        - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
-        - showAxis: Bool value that controls whenever to show axis.
-        - axisColor: Axis and labels color. Default is `.secondary`
-        - axisLeadingPadding: Leading padding value for axis.
-        - showLabels: Bool value that controls whenever to show labels.
-        - labelCount: The count of labels that should be shown below the the chart.
-        - showLegends: Bool value that controls whenever to show legends.
+     - dataPoints: The array of data points that will be used to draw the bar chart.
+     - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
+     - showAxis: Bool value that controls whenever to show axis.
+     - axisColor: Axis and labels color. Default is `.secondary`
+     - axisLeadingPadding: Leading padding value for axis.
+     - showLabels: Bool value that controls whenever to show labels.
+     - labelCount: The count of labels that should be shown below the chart. Default is dataPoints.count unless you specify a value.
+     - labelCount: The count of labels that should be shown below the the chart.
+     - showLegends: Bool value that controls whenever to show legends.
      */
     public init(
         dataPoints: [DataPoint],
@@ -38,7 +39,7 @@ public struct LineChartView: View {
         axisColor: Color = .secondary,
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
-        labelCount: Int = 3,
+        labelCount: Int? = nil,
         showLegends: Bool = true
     ) {
         self.dataPoints = dataPoints
@@ -78,27 +79,33 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                ZStack {
-                    if showAxis {
-                        grid
-                    } else {
-                        grid.hidden()
+                VStack {
+                    ZStack {
+                        if showAxis {
+                            grid
+                        } else {
+                            grid.hidden()
+                        }
+                        
+                        LineChartShape(dataPoints: dataPoints)
+                            .stroke(lineWidth: 1)
+                            .stroke(Color.accentColor)
+                            //                        .fill(gradient)
+                            .frame(minHeight: lineMinHeight)
                     }
-
-                    LineChartShape(dataPoints: dataPoints)
-                        .fill(gradient)
-                        .frame(minHeight: lineMinHeight)
+                    if showLabels {
+                        LabelsView(dataPoints: dataPoints,
+                                   axisColor: axisColor,
+                                   labelCount: labelCount ?? dataPoints.count)
+                            .accessibilityHidden(true)
+                    }
                 }
+
                 if showAxis {
                     AxisView(dataPoints: dataPoints, axisColor: axisColor)
+                        .padding(.leading, axisLeadingPadding)
                         .accessibilityHidden(true)
                 }
-            }
-            if showLabels {
-                LabelsView(dataPoints: dataPoints,
-                           axisColor: axisColor,
-                           labelCount: labelCount)
-                    .accessibilityHidden(true)
             }
 
             if showLegends {
