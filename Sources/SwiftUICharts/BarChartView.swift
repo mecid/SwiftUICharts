@@ -59,8 +59,17 @@ public struct BarChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis, axisColor: axisColor)
-                    .frame(minHeight: barMinHeight)
+                VStack {
+                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis, axisColor: axisColor)
+                        .frame(minHeight: barMinHeight)
+
+                    if showLabels {
+                        LabelsView(dataPoints: dataPoints,
+                                   axisColor: axisColor,
+                                   labelCount: labelCount ?? dataPoints.count)
+                            .accessibilityHidden(true)
+                    }
+                }
 
                 if showAxis {
                     AxisView(dataPoints: dataPoints, axisColor: axisColor)
@@ -68,13 +77,6 @@ public struct BarChartView: View {
                         .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
                 }
-            }
-            if showLabels {
-                LabelsView(dataPoints: dataPoints,
-                           axisColor: axisColor,
-                           padding: axisLeadingPadding,
-                           labelCount: labelCount ?? dataPoints.count)
-                    .accessibilityHidden(true)
             }
             if showLegends {
                 LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)

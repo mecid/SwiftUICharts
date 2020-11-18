@@ -97,7 +97,6 @@ public struct LineChartView: View {
             if showLabels {
                 LabelsView(dataPoints: dataPoints,
                            axisColor: axisColor,
-                           padding: axisLeadingPadding,
                            labelCount: labelCount)
                     .accessibilityHidden(true)
             }

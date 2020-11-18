@@ -10,7 +10,6 @@ import SwiftUI
 struct LabelsView: View {
     let dataPoints: [DataPoint]
     let axisColor: Color
-    let padding: CGFloat
     
     var labelCount = 3
 
@@ -20,15 +19,16 @@ struct LabelsView: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
-                if index % self.threshold == 0 {
-                    Text(bar.label)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(axisColor)
-                        .font(.caption)
-                        .padding(.top, padding)
-                    Spacer()
+        GeometryReader { geometry in
+            HStack(spacing: 0) {
+                ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
+                    if index % self.threshold == 0 {
+                        Text(bar.label)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(axisColor)
+                            .font(.caption)
+                            .frame(width: geometry.size.width / CGFloat(labelCount), alignment: .center)
+                    }
                 }
             }
         }
@@ -38,7 +38,7 @@ struct LabelsView: View {
 #if DEBUG
 struct LabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelsView(dataPoints: DataPoint.mock, axisColor: .secondary, padding: 0)
+        LabelsView(dataPoints: DataPoint.mock, axisColor: .secondary)
     }
 }
 #endif
