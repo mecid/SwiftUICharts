@@ -10,6 +10,7 @@ import SwiftUI
 struct LabelsView: View {
     let dataPoints: [DataPoint]
     let axisColor: Color
+    
     var labelCount = 3
 
     private var threshold: Int {
@@ -18,14 +19,16 @@ struct LabelsView: View {
     }
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
-                if index % self.threshold == 0 {
-                    Text(bar.label)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(axisColor)
-                        .font(.caption)
-                    Spacer()
+        GeometryReader { geometry in
+            HStack(spacing: 0) {
+                ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
+                    if index % self.threshold == 0 {
+                        Text(bar.label)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(axisColor)
+                            .font(.caption)
+                            .frame(width: geometry.size.width / CGFloat(labelCount), alignment: .center)
+                    }
                 }
             }
         }
