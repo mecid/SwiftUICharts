@@ -50,7 +50,7 @@ struct BarsView: View {
                             .fill(bar.legend.color)
                             .accessibilityLabel(Text(bar.label))
                             .accessibilityValue(Text(bar.legend.label))
-                            .frame(height: CGFloat(bar.value / self.max) * geometry.size.height)
+                            .frame(height: CGFloat(bar.value / max) * geometry.size.height)
                     }
                 }
 
@@ -64,7 +64,7 @@ struct BarsView: View {
                             .foregroundColor(.white)
                             .background(limit.legend.color)
                             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                    }.offset(y: CGFloat(limit.value / self.max) * geometry.size.height / -2)
+                    }.offset(y: CGFloat(limit.value / max) * geometry.size.height / -2)
                 }
             }
         }
