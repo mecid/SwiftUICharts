@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// SwiftUI view that draws data points by drawing a line.
-public struct LineChartView: View {
+public struct LineChartView<Content: View>: View {
     let dataPoints: [DataPoint]
     let lineMinHeight: CGFloat
     let showAxis: Bool
@@ -16,7 +16,10 @@ public struct LineChartView: View {
     let axisLeadingPadding: CGFloat
     let showLabels: Bool
     let labelCount: Int?
-    let showLegends: Bool
+
+    private let legend: () -> Content
+    private let lineShape: () -> Content
+    private let pinShape: () -> Content
 
     /**
      Creates new line chart view with the following parameters.
@@ -30,7 +33,7 @@ public struct LineChartView: View {
      - showLabels: Bool value that controls whenever to show labels.
      - labelCount: The count of labels that should be shown below the chart. Default is dataPoints.count unless you specify a value.
      - labelCount: The count of labels that should be shown below the the chart.
-     - showLegends: Bool value that controls whenever to show legends.
+     - fillChartShape: Use gradient to fill the line chart shape
      */
     public init(
         dataPoints: [DataPoint],
@@ -40,7 +43,9 @@ public struct LineChartView: View {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        @ViewBuilder legend: @escaping () -> Content,
+        @ViewBuilder lineShape: @escaping () -> Content,
+        @ViewBuilder pinShape: @escaping () -> Content
     ) {
         self.dataPoints = dataPoints
         self.lineMinHeight = lineMinHeight
@@ -49,16 +54,9 @@ public struct LineChartView: View {
         self.axisLeadingPadding = axisLeadingPadding
         self.showLabels = showLabels
         self.labelCount = labelCount
-        self.showLegends = showLegends
-    }
-
-    private var gradient: LinearGradient {
-        let colors = dataPoints.map(\.legend).map(\.color)
-        return LinearGradient(
-            gradient: Gradient(colors: colors),
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        self.legend = legend
+        self.lineShape = lineShape
+        self.pinShape = pinShape
     }
 
     private var grid: some View {
@@ -70,8 +68,7 @@ public struct LineChartView: View {
                     lineCap: .round,
                     lineJoin: .round,
                     miterLimit: 0,
-                    dash: [1, 8],
-                    dashPhase: 1
+                    dash: [1, 8]
                 )
             )
     }
@@ -86,13 +83,11 @@ public struct LineChartView: View {
                         } else {
                             grid.hidden()
                         }
-                        
-                        LineChartShape(dataPoints: dataPoints)
-                            .stroke(lineWidth: 1)
-                            .stroke(Color.accentColor)
-                            //                        .fill(gradient)
-                            .frame(minHeight: lineMinHeight)
+
+                        lineShape()
+                        pinShape()
                     }
+
                     if showLabels {
                         LabelsView(dataPoints: dataPoints,
                                    axisColor: axisColor,
@@ -108,10 +103,7 @@ public struct LineChartView: View {
                 }
             }
 
-            if showLegends {
-                LegendView(dataPoints: dataPoints)
-                    .accessibilityHidden(true)
-            }
+            legend()
         }
     }
 }
@@ -119,7 +111,10 @@ public struct LineChartView: View {
 #if DEBUG
 struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartView(dataPoints: DataPoint.mock)
+        LineChartView(dataPoints: DataPoint.mock,
+                      legend: { EmptyView() },
+                      lineShape: { EmptyView() },
+                      pinShape: { EmptyView() })
     }
 }
 #endif

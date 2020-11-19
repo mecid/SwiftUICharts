@@ -7,14 +7,14 @@
 //
 import SwiftUI
 
-struct LegendView: View {
+public struct LegendView: View {
     let legends: [Legend]
 
-    init(dataPoints: [DataPoint]) {
+    public init(dataPoints: [DataPoint]) {
         legends = Array(Set(dataPoints.map { $0.legend })).sorted()
     }
 
-    var body: some View {
+    public var body: some View {
         LazyVGrid(columns: [.init(.adaptive(minimum: 100))], alignment: .leading) {
             ForEach(legends) { legend in
                 HStack(alignment: .center) {
@@ -23,7 +23,9 @@ struct LegendView: View {
                         .frame(width: 16, height: 16)
 
                     Text(legend.label)
+                        .foregroundColor(legend.color)
                 }
+                .padding(4)
             }
         }
     }

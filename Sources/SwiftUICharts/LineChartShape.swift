@@ -6,17 +6,29 @@
 //
 import SwiftUI
 
-struct LineChartShape: Shape {
+public struct LineChartShape: Shape {
     let dataPoints: [DataPoint]
-    var closePath: Bool = true
+    let closePath: Bool
+    let showPin: Bool
 
-    func path(in rect: CGRect) -> Path {
+    private var shouldShowPin: Bool {
+        showPin && !dataPoints.isEmpty && !closePath
+    }
+
+    public init(dataPoints: [DataPoint], closePath: Bool = true, showPin: Bool = false) {
+        self.dataPoints = dataPoints
+        self.closePath = closePath
+        self.showPin = showPin
+    }
+
+    public func path(in rect: CGRect) -> Path {
         Path { path in
-            let start = CGFloat(dataPoints.first?.value ?? 0) / CGFloat(dataPoints.max()?.value ?? 1)
-            path.move(to: CGPoint(x: 0, y: rect.height - rect.height * start))
+            let startY = CGFloat(dataPoints.first?.value ?? 0) / CGFloat(dataPoints.max()?.value ?? 1)
             let stepX = rect.width / CGFloat(dataPoints.count)
-            var currentX: CGFloat = 0
-            dataPoints.forEach {
+            path.move(to: CGPoint(x: stepX * 0.5, y: rect.height - rect.height * startY))
+            var currentX: CGFloat = stepX * 0.5
+
+            dataPoints.dropFirst().forEach {
                 currentX += stepX
                 let y = CGFloat($0.value / (dataPoints.max()?.value ?? 1)) * rect.height
                 path.addLine(to: CGPoint(x: currentX, y: rect.height - y))
