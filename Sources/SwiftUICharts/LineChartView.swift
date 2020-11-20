@@ -15,7 +15,7 @@ public struct LineChartView: View {
     let axisColor: Color
     let axisLeadingPadding: CGFloat
     let showLabels: Bool
-    let labelCount: Int
+    let labelCount: Int?
     let showLegends: Bool
 
     /**
@@ -28,7 +28,7 @@ public struct LineChartView: View {
         - axisColor: Axis and labels color. Default is `.secondary`
         - axisLeadingPadding: Leading padding value for axis.
         - showLabels: Bool value that controls whenever to show labels.
-        - labelCount: The count of labels that should be shown below the the chart.
+        - labelCount: The count of labels that should be shown below the chart. Default is dataPoints.count unless you specify a value.
         - showLegends: Bool value that controls whenever to show legends.
      */
     public init(
@@ -38,7 +38,7 @@ public struct LineChartView: View {
         axisColor: Color = .secondary,
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
-        labelCount: Int = 3,
+        labelCount: Int? = nil,
         showLegends: Bool = true
     ) {
         self.dataPoints = dataPoints
@@ -91,18 +91,21 @@ public struct LineChartView: View {
                 }
                 if showAxis {
                     AxisView(dataPoints: dataPoints, axisColor: axisColor)
+                        .padding(.leading, axisLeadingPadding)
+                        .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
                 }
             }
             if showLabels {
                 LabelsView(dataPoints: dataPoints,
                            axisColor: axisColor,
-                           labelCount: labelCount)
+                           labelCount: labelCount ?? dataPoints.count)
                     .accessibilityHidden(true)
             }
 
             if showLegends {
                 LegendView(dataPoints: dataPoints)
+                    .padding()
                     .accessibilityHidden(true)
             }
         }
