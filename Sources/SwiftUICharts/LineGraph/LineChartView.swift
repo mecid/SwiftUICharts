@@ -5,6 +5,7 @@
 //  Created by Majid Jabrayilov on 6/27/20.
 //  Copyright © 2020 Majid Jabrayilov. All rights reserved.
 //
+
 import SwiftUI
 
 /// SwiftUI view that draws data points by drawing a line.
@@ -12,14 +13,15 @@ public struct LineChartView<Content: View>: View {
     let dataPoints: [DataPoint]
     let lineMinHeight: CGFloat
     let showAxis: Bool
-    let axisColor: Color
-    let axisLeadingPadding: CGFloat
     let showLabels: Bool
     let labelCount: Int?
 
+    private let grid: () -> Content
     private let legend: () -> Content
     private let lineShape: () -> Content
     private let pinShape: () -> Content
+    private let axisView: () -> Content
+    private let labelsView: () -> Content
 
     /**
      Creates new line chart view with the following parameters.
@@ -28,49 +30,34 @@ public struct LineChartView<Content: View>: View {
      - dataPoints: The array of data points that will be used to draw the bar chart.
      - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
      - showAxis: Bool value that controls whenever to show axis.
-     - axisColor: Axis and labels color. Default is `.secondary`
-     - axisLeadingPadding: Leading padding value for axis.
      - showLabels: Bool value that controls whenever to show labels.
      - labelCount: The count of labels that should be shown below the chart. Default is dataPoints.count unless you specify a value.
-     - labelCount: The count of labels that should be shown below the the chart.
-     - fillChartShape: Use gradient to fill the line chart shape
      */
     public init(
         dataPoints: [DataPoint],
         lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
-        axisColor: Color = .secondary,
-        axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
+        @ViewBuilder grid: @escaping () -> Content,
         @ViewBuilder legend: @escaping () -> Content,
         @ViewBuilder lineShape: @escaping () -> Content,
-        @ViewBuilder pinShape: @escaping () -> Content
+        @ViewBuilder pinShape: @escaping () -> Content,
+        @ViewBuilder axisView: @escaping () -> Content,
+        @ViewBuilder labelsView: @escaping () -> Content
     ) {
         self.dataPoints = dataPoints
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
-        self.axisColor = axisColor
-        self.axisLeadingPadding = axisLeadingPadding
         self.showLabels = showLabels
         self.labelCount = labelCount
+
+        self.grid = grid
         self.legend = legend
         self.lineShape = lineShape
         self.pinShape = pinShape
-    }
-
-    private var grid: some View {
-        ChartGrid(dataPoints: dataPoints)
-            .stroke(
-                axisColor,
-                style: StrokeStyle(
-                    lineWidth: 1,
-                    lineCap: .round,
-                    lineJoin: .round,
-                    miterLimit: 0,
-                    dash: [1, 8]
-                )
-            )
+        self.axisView = axisView
+        self.labelsView = labelsView
     }
 
     public var body: some View {
@@ -79,28 +66,19 @@ public struct LineChartView<Content: View>: View {
                 VStack {
                     ZStack {
                         if showAxis {
-                            grid
+                            grid()
                         } else {
-                            grid.hidden()
+                            grid().hidden()
                         }
 
                         lineShape()
                         pinShape()
                     }
 
-                    if showLabels {
-                        LabelsView(dataPoints: dataPoints,
-                                   axisColor: axisColor,
-                                   labelCount: labelCount ?? dataPoints.count)
-                            .accessibilityHidden(true)
-                    }
+                    if showLabels { labelsView() }
                 }
 
-                if showAxis {
-                    AxisView(dataPoints: dataPoints, axisColor: axisColor)
-                        .padding(.leading, axisLeadingPadding)
-                        .accessibilityHidden(true)
-                }
+                if showAxis { axisView() }
             }
 
             legend()
@@ -112,9 +90,12 @@ public struct LineChartView<Content: View>: View {
 struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
         LineChartView(dataPoints: DataPoint.mock,
+                      grid: { EmptyView() },
                       legend: { EmptyView() },
                       lineShape: { EmptyView() },
-                      pinShape: { EmptyView() })
+                      pinShape: { EmptyView() },
+                      axisView: { EmptyView() },
+                      labelsView: { EmptyView() })
     }
 }
 #endif

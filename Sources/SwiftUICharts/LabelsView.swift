@@ -7,25 +7,30 @@
 //
 import SwiftUI
 
-struct LabelsView: View {
+public struct LabelsView: View {
     let dataPoints: [DataPoint]
-    let axisColor: Color
-    
-    var labelCount = 3
+    let labelColor: Color
+    let labelCount: Int
 
     private var threshold: Int {
         let threshold = Double(dataPoints.count) / Double(labelCount)
         return Int(threshold.rounded(.awayFromZero))
     }
 
-    var body: some View {
+    public init(dataPoints: [DataPoint], axisColor: Color, labelCount: Int? = nil) {
+        self.dataPoints = dataPoints
+        self.labelColor = axisColor
+        self.labelCount = labelCount ?? dataPoints.count
+    }
+
+    public var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 0) {
                 ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
                     if index % self.threshold == 0 {
                         Text(bar.label)
                             .multilineTextAlignment(.center)
-                            .foregroundColor(axisColor)
+                            .foregroundColor(labelColor)
                             .font(.caption)
                             .frame(width: geometry.size.width / CGFloat(labelCount), alignment: .center)
                     }

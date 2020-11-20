@@ -7,18 +7,18 @@
 //
 import SwiftUI
 
-struct AxisView: View {
+public struct AxisView: View {
     let dataPoints: [DataPoint]
     let axisColor: Color
     let format: String
 
-    init(dataPoints: [DataPoint], axisColor: Color, format: String = "%.0f") {
+    public init(dataPoints: [DataPoint], axisColor: Color, format: String = "%.0f") {
         self.dataPoints = dataPoints
         self.axisColor = axisColor
         self.format = format
     }
 
-    var body: some View {
+    public var body: some View {
         VStack {
             dataPoints.max().map {
                 Text(String(format: format, locale: Locale.current, $0.value))

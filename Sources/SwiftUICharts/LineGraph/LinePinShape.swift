@@ -16,7 +16,9 @@ public struct LinePinShape: Shape {
     }
 
     public func path(in rect: CGRect) -> Path {
-        Path { path in
+        guard !dataPoints.isEmpty else { return Path() }
+
+        return Path { path in
             let startY = CGFloat(dataPoints.first?.value ?? 0) / CGFloat(dataPoints.max()?.value ?? 1)
             let stepX = rect.width / CGFloat(dataPoints.count)
             path.move(to: CGPoint(x: stepX * 0.5 - pinSize.width * 0.5, y: rect.height - rect.height * startY))

@@ -7,41 +7,36 @@
 //
 import SwiftUI
 
-struct BarsView: View {
+public struct BarsView<Content: View>: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
     let showAxis: Bool
-    let axisColor: Color
+
+    private let grid: () -> Content
+
+    public init(dataPoints: [DataPoint],
+                limit: DataPoint? = nil,
+                showAxis: Bool,
+                @ViewBuilder grid: @escaping () -> Content) {
+        self.dataPoints = dataPoints
+        self.limit = limit
+        self.showAxis = showAxis
+
+        self.grid = grid
+    }
 
     private var max: Double {
-        guard let max = dataPoints.max()?.value, max != 0 else {
-            return 1
-        }
+        guard let max = dataPoints.max()?.value, max != 0 else { return 1 }
         return max
     }
 
-    private var grid: some View {
-        ChartGrid(dataPoints: dataPoints)
-            .stroke(
-                axisColor,
-                style: StrokeStyle(
-                    lineWidth: 1,
-                    lineCap: .round,
-                    lineJoin: .round,
-                    miterLimit: 0,
-                    dash: [1, 8],
-                    dashPhase: 0
-                )
-            )
-    }
-
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
                 if showAxis {
-                    grid
+                    grid()
                 } else {
-                    grid.hidden()
+                    grid().hidden()
                 }
 
                 HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
@@ -74,7 +69,10 @@ struct BarsView: View {
 #if DEBUG
 struct BarsView_Previews: PreviewProvider {
     static var previews: some View {
-        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: true, axisColor: .secondary)
+        BarsView(dataPoints: DataPoint.mock,
+                 limit: nil,
+                 showAxis: true,
+                 grid: { EmptyView() })
     }
 }
 #endif

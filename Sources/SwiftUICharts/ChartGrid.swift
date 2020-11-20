@@ -8,10 +8,14 @@
 
 import SwiftUI
 
-struct ChartGrid: Shape {
+public struct ChartGrid: Shape {
     let dataPoints: [DataPoint]
 
-    func path(in rect: CGRect) -> Path {
+    public init(dataPoints: [DataPoint]) {
+        self.dataPoints = dataPoints
+    }
+
+    public func path(in rect: CGRect) -> Path {
         Path { path in
             path.move(to: CGPoint(x: 0, y: 0))
             path.addLine(to: CGPoint(x: rect.width, y: 0))

@@ -8,9 +8,17 @@
 import SwiftUI
 
 /// SwiftUI view that draws bars by placing them into a vertical container.
-public struct HorizontalBarChartView: View {
+public struct HorizontalBarChartView<Content: View>: View {
     let dataPoints: [DataPoint]
     let barMaxWidth: CGFloat
+
+    private let legend: () -> Content
+    private let barsView: () -> Content
+
+    private var max: Double {
+        guard let max = dataPoints.max()?.value, max != 0 else { return 1 }
+        return max
+    }
 
     /**
      Creates new horizontal bar chart with the following parameters.
@@ -19,16 +27,14 @@ public struct HorizontalBarChartView: View {
         - dataPoints: The array of data points that will be used to draw the bar chart.
         - barMaxWidth: The maximal width for the bar that presents the biggest value. Default is 100.
      */
-    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
+    public init(dataPoints: [DataPoint],
+                barMaxWidth: CGFloat = 100,
+                @ViewBuilder legend: @escaping () -> Content,
+                @ViewBuilder barsView: @escaping () -> Content) {
         self.dataPoints = dataPoints
         self.barMaxWidth = barMaxWidth
-    }
-
-    private var max: Double {
-        guard let max = dataPoints.max()?.value, max != 0 else {
-            return 1
-        }
-        return max
+        self.legend = legend
+        self.barsView = barsView
     }
 
     public var body: some View {
@@ -36,14 +42,12 @@ public struct HorizontalBarChartView: View {
             ForEach(dataPoints) { bar in
                 #if os(watchOS)
                 VStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    barsView()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / max) * barMaxWidth, height: 16)
-                    HStack {
-                        Circle()
-                            .foregroundColor(bar.legend.color)
-                            .frame(width: 8, height: 8)
+                        .frame(width: CGFloat(bar.value / max) * barMaxWidth)
 
+                    HStack {
+                        legend()
                         Text(bar.legend.label) + Text(", ") + Text(bar.label)
 
                         // TODO: temp fix
@@ -52,14 +56,11 @@ public struct HorizontalBarChartView: View {
                 }
                 #else
                 HStack {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    barsView()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / max) * barMaxWidth, height: 16)
+                        .frame(width: CGFloat(bar.value / max) * barMaxWidth)
 
-                    Circle()
-                        .foregroundColor(bar.legend.color)
-                        .frame(width: 8, height: 8)
-
+                    legend()
                     Text(bar.legend.label) + Text(", ") + Text(bar.label)
 
                     // TODO: temp fix
@@ -87,6 +88,8 @@ struct HorizontalBarChart_Previews: PreviewProvider {
             DataPoint(value: 0.05, label: "5%", legend: elevated)
         ]
 
-        return HorizontalBarChartView(dataPoints: dataPoints)
+        return HorizontalBarChartView(dataPoints: dataPoints,
+                                      legend: { EmptyView() },
+                                      barsView: { EmptyView() })
     }
 }
