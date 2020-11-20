@@ -27,7 +27,6 @@ public struct BarChartView: View {
         - limit: The horizontal line that will be drawn over bars. Default is nil.
         - barMinHeight: The minimal height for the bar that presents the biggest value. Default is 100.
         - showAxis: Bool value that controls whenever to show axis.
-        - axisLeadingPadding: Leading padding value for axis.
         - axisColor: Axis and labels color. Default is `.secondary`
         - axisLeadingPadding: Leading padding value for axis.        
         - showLabels: Bool value that controls whenever to show labels.
