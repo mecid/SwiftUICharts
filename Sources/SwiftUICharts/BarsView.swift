@@ -19,30 +19,9 @@ struct BarsView: View {
         return max
     }
 
-    private var grid: some View {
-        ChartGrid(dataPoints: dataPoints)
-            .stroke(
-                Color.secondary,
-                style: StrokeStyle(
-                    lineWidth: 1,
-                    lineCap: .round,
-                    lineJoin: .round,
-                    miterLimit: 0,
-                    dash: [1, 8],
-                    dashPhase: 0
-                )
-            )
-    }
-
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
-                if showAxis {
-                    grid
-                } else {
-                    grid.hidden()
-                }
-
                 HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
                     ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
                         Capsule(style: .continuous)
