@@ -14,13 +14,13 @@ struct AxisView: View {
         VStack {
             dataPoints.max().map {
                 Text(String(Int($0.value)))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.accentColor)
                     .font(.caption)
             }
             Spacer()
             dataPoints.max().map {
                 Text(String(Int($0.value / 2)))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.accentColor)
                     .font(.caption)
             }
             Spacer()
