@@ -14,7 +14,7 @@ public struct BarChartView: View {
     let barMinHeight: CGFloat
     let showAxis: Bool
     let showLabels: Bool
-    let labelCount: Int
+    let labelCount: Int?
     let showLegends: Bool
 
     /**
@@ -26,7 +26,7 @@ public struct BarChartView: View {
         - barMinHeight: The minimal height for the bar that presents the biggest value. Default is 100.
         - showAxis: Bool value that controls whenever to show axis.
         - showLabels: Bool value that controls whenever to show labels.
-        - labelCount: The count of labels that should be shown below the chart.
+        - labelCount: The count of labels that should be shown below the chart. Default is all.
         - showLegends: Bool value that controls whenever to show legends.
      */
     public init(
@@ -35,7 +35,7 @@ public struct BarChartView: View {
         barMinHeight: CGFloat = 100,
         showAxis: Bool = true,
         showLabels: Bool = true,
-        labelCount: Int = 3,
+        labelCount: Int? = nil,
         showLegends: Bool = true
     ) {
         self.dataPoints = dataPoints
@@ -47,25 +47,45 @@ public struct BarChartView: View {
         self.showLegends = showLegends
     }
 
+    private var grid: some View {
+        ChartGrid(dataPoints: dataPoints)
+            .stroke(
+                showAxis ? Color.accentColor : .clear,
+                style: StrokeStyle(
+                    lineWidth: 1,
+                    lineCap: .round,
+                    lineJoin: .round,
+                    miterLimit: 0,
+                    dash: [1, 8],
+                    dashPhase: 0
+                )
+            )
+    }
+
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis)
-                    .frame(minHeight: barMinHeight)
+                VStack {
+                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis)
+                        .frame(minHeight: barMinHeight)
+                        .overlay(grid)
 
+                    if showLabels {
+                        LabelsView(
+                            dataPoints: dataPoints,
+                            labelCount: labelCount ?? dataPoints.count
+                        ).accessibilityHidden(true)
+                    }
+                }
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
                         .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
                 }
             }
-            if showLabels {
-                LabelsView(dataPoints: dataPoints, labelCount: labelCount)
-                    .accessibilityHidden(true)
-            }
+
             if showLegends {
                 LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)
-                    .padding()
                     .accessibilityHidden(true)
             }
         }
