@@ -13,6 +13,7 @@ public struct BarChartView: View {
     let limit: DataPoint?
     let barMinHeight: CGFloat
     let showAxis: Bool
+    let axisLeadingPadding: CGFloat
     let showLabels: Bool
     let labelCount: Int?
     let showLegends: Bool
@@ -34,6 +35,7 @@ public struct BarChartView: View {
         limit: DataPoint? = nil,
         barMinHeight: CGFloat = 100,
         showAxis: Bool = true,
+        axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
         showLegends: Bool = true
@@ -42,6 +44,7 @@ public struct BarChartView: View {
         self.limit = limit
         self.barMinHeight = barMinHeight
         self.showAxis = showAxis
+        self.axisLeadingPadding = axisLeadingPadding
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
@@ -81,6 +84,7 @@ public struct BarChartView: View {
                     AxisView(dataPoints: dataPoints)
                         .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
+                        .padding(.leading, axisLeadingPadding)
                 }
             }
 
