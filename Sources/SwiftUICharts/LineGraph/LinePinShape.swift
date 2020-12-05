@@ -16,7 +16,7 @@ public struct LinePinShape: Shape {
     }
 
     public func path(in rect: CGRect) -> Path {
-        guard !dataPoints.isEmpty else { return Path() }
+        guard !dataPoints.isEmpty, let max = dataPoints.max()?.value, max > 0 else { return Path() }
 
         return Path { path in
             let startY = CGFloat(dataPoints.first?.value ?? 0) / CGFloat(dataPoints.max()?.value ?? 1)
