@@ -12,6 +12,7 @@ public struct LineChartView: View {
     let dataPoints: [DataPoint]
     let lineMinHeight: CGFloat
     let showAxis: Bool
+    let axisLeadingPadding: CGFloat
     let showLabels: Bool
     let labelCount: Int
     let showLegends: Bool
@@ -23,6 +24,7 @@ public struct LineChartView: View {
         - dataPoints: The array of data points that will be used to draw the bar chart.
         - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
         - showAxis: Bool value that controls whenever to show axis.
+        - axisLeadingPadding: Leading padding for axis line. Default is 0.
         - showLabels: Bool value that controls whenever to show labels.
         - labelCount: The count of labels that should be shown below the the chart.
         - showLegends: Bool value that controls whenever to show legends.
@@ -31,6 +33,7 @@ public struct LineChartView: View {
         dataPoints: [DataPoint],
         lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
+        axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int = 3,
         showLegends: Bool = true
@@ -38,6 +41,7 @@ public struct LineChartView: View {
         self.dataPoints = dataPoints
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
+        self.axisLeadingPadding = axisLeadingPadding
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
@@ -84,6 +88,7 @@ public struct LineChartView: View {
                 if showAxis {
                     AxisView(dataPoints: dataPoints)
                         .accessibilityHidden(true)
+                        .padding(.leading, axisLeadingPadding)
                 }
             }
             if showLabels {
