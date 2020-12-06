@@ -98,6 +98,7 @@ public struct LineChartView: View {
 
             if showLegends {
                 LegendView(dataPoints: dataPoints)
+                    .padding()
                     .accessibilityHidden(true)
             }
         }
