@@ -91,6 +91,7 @@ public struct BarChartView: View {
 
             if showLegends {
                 LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)
+                    .padding()
                     .accessibilityHidden(true)
             }
         }
