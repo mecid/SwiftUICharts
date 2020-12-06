@@ -30,7 +30,7 @@ struct BarsView: View {
                             .accessibilityValue(Text(bar.legend.label))
                             .frame(height: CGFloat(bar.value / self.max) * geometry.size.height)
                     }
-                }
+                }.frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
 
                 limit.map { limit in
                     ZStack {
