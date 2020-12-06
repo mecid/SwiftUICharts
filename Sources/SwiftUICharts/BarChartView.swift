@@ -72,7 +72,7 @@ public struct BarChartView: View {
                 VStack {
                     BarsView(dataPoints: dataPoints, limit: limit, showAxis: showAxis)
                         .frame(minHeight: barMinHeight)
-                        .overlay(grid)
+                        .background(grid)
 
                     if showLabels {
                         LabelsView(
