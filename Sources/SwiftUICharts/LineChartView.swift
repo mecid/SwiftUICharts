@@ -8,13 +8,13 @@
 import SwiftUI
 
 /// Type that defines a line chart style.
-struct LineChartStyle: ChartStyle {
-    let lineMinHeight: CGFloat
-    let showAxis: Bool
-    let axisLeadingPadding: CGFloat
-    let showLabels: Bool
-    let labelCount: Int
-    let showLegends: Bool
+public struct LineChartStyle: ChartStyle {
+    public let lineMinHeight: CGFloat
+    public let showAxis: Bool
+    public let axisLeadingPadding: CGFloat
+    public let showLabels: Bool
+    public let labelCount: Int
+    public let showLegends: Bool
 
     /**
      Creates new line chart style with the following parameters.
