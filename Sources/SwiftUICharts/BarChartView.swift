@@ -9,12 +9,12 @@ import SwiftUI
 
 /// Type that defines a bar chart style.
 public struct BarChartStyle: ChartStyle {
-    let barMinHeight: CGFloat
-    let showAxis: Bool
-    let axisLeadingPadding: CGFloat
-    let showLabels: Bool
-    let labelCount: Int?
-    let showLegends: Bool
+    public let barMinHeight: CGFloat
+    public let showAxis: Bool
+    public let axisLeadingPadding: CGFloat
+    public let showLabels: Bool
+    public let labelCount: Int?
+    public let showLegends: Bool
     /**
      Creates new bar chart style with the following parameters.
 

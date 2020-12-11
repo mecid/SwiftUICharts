@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-protocol ChartStyle {
+public protocol ChartStyle {
     var showLabels: Bool { get }
     var showAxis: Bool { get }
     var showLegends: Bool { get }
@@ -24,7 +24,7 @@ extension EnvironmentValues {
 }
 
 extension View {
-    func chartStyle(_ style: ChartStyle) -> some View {
+    public func chartStyle(_ style: ChartStyle) -> some View {
         environment(\.chartStyle, style)
     }
 }
