@@ -7,9 +7,8 @@
 //
 import SwiftUI
 
-/// SwiftUI view that draws data points by drawing a line.
-public struct LineChartView: View {
-    let dataPoints: [DataPoint]
+/// Type that defines a line chart style.
+struct LineChartStyle: ChartStyle {
     let lineMinHeight: CGFloat
     let showAxis: Bool
     let axisLeadingPadding: CGFloat
@@ -18,10 +17,9 @@ public struct LineChartView: View {
     let showLegends: Bool
 
     /**
-     Creates new line chart view with the following parameters.
+     Creates new line chart style with the following parameters.
 
      - Parameters:
-        - dataPoints: The array of data points that will be used to draw the bar chart.
         - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
         - showAxis: Bool value that controls whenever to show axis.
         - axisLeadingPadding: Leading padding for axis line. Default is 0.
@@ -29,8 +27,8 @@ public struct LineChartView: View {
         - labelCount: The count of labels that should be shown below the the chart.
         - showLegends: Bool value that controls whenever to show legends.
      */
+
     public init(
-        dataPoints: [DataPoint],
         lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
         axisLeadingPadding: CGFloat = 0,
@@ -38,13 +36,32 @@ public struct LineChartView: View {
         labelCount: Int = 3,
         showLegends: Bool = true
     ) {
-        self.dataPoints = dataPoints
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
         self.axisLeadingPadding = axisLeadingPadding
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+    }
+}
+
+/// SwiftUI view that draws data points by drawing a line.
+public struct LineChartView: View {
+    @Environment(\.chartStyle) var chartStyle
+    let dataPoints: [DataPoint]
+
+    /**
+     Creates new line chart view with the following parameters.
+
+     - Parameters:
+     - dataPoints: The array of data points that will be used to draw the bar chart.
+     */
+    public init(dataPoints: [DataPoint]) {
+        self.dataPoints = dataPoints
+    }
+
+    private var style: LineChartStyle {
+        (chartStyle as? LineChartStyle) ?? .init()
     }
 
     private var gradient: LinearGradient {
@@ -59,7 +76,7 @@ public struct LineChartView: View {
     private var grid: some View {
         ChartGrid(dataPoints: dataPoints)
             .stroke(
-                Color.secondary,
+                style.showAxis ? Color.secondary : .clear,
                 style: StrokeStyle(
                     lineWidth: 1,
                     lineCap: .round,
@@ -74,29 +91,24 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                ZStack {
-                    if showAxis {
-                        grid
-                    } else {
-                        grid.hidden()
-                    }
+                LineChartShape(dataPoints: dataPoints)
+                    .fill(gradient)
+                    .frame(minHeight: style.lineMinHeight)
+                    .background(grid)
 
-                    LineChartShape(dataPoints: dataPoints)
-                        .fill(gradient)
-                        .frame(minHeight: lineMinHeight)
-                }
-                if showAxis {
+                if style.showAxis {
                     AxisView(dataPoints: dataPoints)
                         .accessibilityHidden(true)
-                        .padding(.leading, axisLeadingPadding)
+                        .padding(.leading, style.axisLeadingPadding)
                 }
             }
-            if showLabels {
-                LabelsView(dataPoints: dataPoints, labelCount: labelCount)
+
+            if style.showLabels {
+                LabelsView(dataPoints: dataPoints, labelCount: style.labelCount)
                     .accessibilityHidden(true)
             }
 
-            if showLegends {
+            if style.showLegends {
                 LegendView(dataPoints: dataPoints)
                     .padding()
                     .accessibilityHidden(true)
@@ -108,7 +120,10 @@ public struct LineChartView: View {
 #if DEBUG
 struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartView(dataPoints: DataPoint.mock)
+        HStack {
+            LineChartView(dataPoints: DataPoint.mock)
+            LineChartView(dataPoints: DataPoint.mock)
+        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false))
     }
 }
 #endif
