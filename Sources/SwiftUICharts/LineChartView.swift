@@ -13,7 +13,7 @@ public struct LineChartStyle: ChartStyle {
     public let showAxis: Bool
     public let axisLeadingPadding: CGFloat
     public let showLabels: Bool
-    public let labelCount: Int
+    public let labelCount: Int?
     public let showLegends: Bool
 
     /**
@@ -33,7 +33,7 @@ public struct LineChartStyle: ChartStyle {
         showAxis: Bool = true,
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
-        labelCount: Int = 3,
+        labelCount: Int? = nil,
         showLegends: Bool = true
     ) {
         self.lineMinHeight = lineMinHeight
@@ -104,7 +104,7 @@ public struct LineChartView: View {
             }
 
             if style.showLabels {
-                LabelsView(dataPoints: dataPoints, labelCount: style.labelCount)
+                LabelsView(dataPoints: dataPoints, labelCount: style.labelCount ?? dataPoints.count)
                     .accessibilityHidden(true)
             }
 
