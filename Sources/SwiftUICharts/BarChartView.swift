@@ -57,7 +57,7 @@ public struct BarChartView: View {
         - dataPoints: The array of data points that will be used to draw the bar chart.
         - limit: The horizontal line that will be drawn over bars. Default is nil.
      */
-    public init(dataPoints: [DataPoint], limit: DataPoint) {
+    public init(dataPoints: [DataPoint], limit: DataPoint? = nil) {
         self.dataPoints = dataPoints
         self.limit = limit
     }
