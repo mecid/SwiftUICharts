@@ -24,7 +24,7 @@ public struct LineChartStyle: ChartStyle {
         - showAxis: Bool value that controls whenever to show axis.
         - axisLeadingPadding: Leading padding for axis line. Default is 0.
         - showLabels: Bool value that controls whenever to show labels.
-        - labelCount: The count of labels that should be shown below the the chart.
+        - labelCount: The count of labels that should be shown below the the chart. Default is all.
         - showLegends: Bool value that controls whenever to show legends.
      */
 
@@ -54,7 +54,7 @@ public struct LineChartView: View {
      Creates new line chart view with the following parameters.
 
      - Parameters:
-     - dataPoints: The array of data points that will be used to draw the bar chart.
+        - dataPoints: The array of data points that will be used to draw the bar chart.
      */
     public init(dataPoints: [DataPoint]) {
         self.dataPoints = dataPoints
