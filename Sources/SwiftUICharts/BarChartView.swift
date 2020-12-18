@@ -15,6 +15,9 @@ public struct BarChartStyle: ChartStyle {
     public let showLabels: Bool
     public let labelCount: Int?
     public let showLegends: Bool
+    public let barsCornerRadius: CGFloat
+    public let barsCorners: UIRectCorner
+
     /**
      Creates new bar chart style with the following parameters.
 
@@ -25,6 +28,8 @@ public struct BarChartStyle: ChartStyle {
         - showLabels: Bool value that controls whenever to show labels.
         - labelCount: The count of labels that should be shown below the chart. Default is all.
         - showLegends: Bool value that controls whenever to show legends.
+        - barsCornerRadius: CGFloat value that controls corner radius of the bars
+        - barsCorners: UIRectCorner value that controls what corners should get a radius
      */
     public init(
         barMinHeight: CGFloat = 100,
@@ -32,7 +37,9 @@ public struct BarChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        barsCornerRadius: CGFloat = 5.0,
+        barsCorners: UIRectCorner = []
     ) {
         self.barMinHeight = barMinHeight
         self.showAxis = showAxis
@@ -40,6 +47,9 @@ public struct BarChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.barsCornerRadius = barsCornerRadius
+        self.barsCorners = barsCorners
+        print(barsCornerRadius)
     }
 }
 
@@ -85,7 +95,7 @@ public struct BarChartView: View {
         VStack {
             HStack(spacing: 0) {
                 VStack {
-                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: style.showAxis)
+                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: style.showAxis, barsCornerRadius: style.barsCornerRadius, barsCorners: style.barsCorners)
                         .frame(minHeight: style.barMinHeight)
                         .background(grid)
 

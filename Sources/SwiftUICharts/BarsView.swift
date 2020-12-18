@@ -11,6 +11,8 @@ struct BarsView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
     let showAxis: Bool
+    let barsCornerRadius: CGFloat
+    let barsCorners: UIRectCorner
 
     private var max: Double {
         guard let max = dataPoints.max()?.value, max != 0 else {
@@ -24,8 +26,9 @@ struct BarsView: View {
             ZStack(alignment: .bottomTrailing) {
                 HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
                     ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
-                        Capsule(style: .continuous)
+                        Rectangle()
                             .fill(bar.legend.color)
+                            .cornerRadius(barsCornerRadius, corners: barsCorners)
                             .accessibilityLabel(Text(bar.label))
                             .accessibilityValue(Text(bar.legend.label))
                             .frame(height: CGFloat(bar.value / self.max) * geometry.size.height)
@@ -52,7 +55,7 @@ struct BarsView: View {
 #if DEBUG
 struct BarsView_Previews: PreviewProvider {
     static var previews: some View {
-        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: true)
+        BarsView(dataPoints: DataPoint.mock, limit: nil, showAxis: true, barsCornerRadius: 0.0, barsCorners: [])
     }
 }
 #endif
