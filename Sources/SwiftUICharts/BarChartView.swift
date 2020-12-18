@@ -49,7 +49,6 @@ public struct BarChartStyle: ChartStyle {
         self.showLegends = showLegends
         self.barsCornerRadius = barsCornerRadius
         self.barsCorners = barsCorners
-        print(barsCornerRadius)
     }
 }
 
