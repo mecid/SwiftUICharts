@@ -10,6 +10,8 @@ import SwiftUI
 struct LabelsView: View {
     let dataPoints: [DataPoint]
     let labelCount: Int
+    let labelFont: Font
+    let labelColor: Color
 
     private var threshold: Int {
         let threshold = Double(dataPoints.count) / Double(labelCount)
@@ -22,8 +24,8 @@ struct LabelsView: View {
                 if index % self.threshold == 0 {
                     Text(bar.label)
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.accentColor)
-                        .font(.caption)
+                        .foregroundColor(labelColor)
+                        .font(labelFont)
                         .frame(minWidth: 0, maxWidth: .infinity)
                 }
             }
@@ -34,7 +36,7 @@ struct LabelsView: View {
 #if DEBUG
 struct LabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelsView(dataPoints: DataPoint.mock, labelCount: 3)
+        LabelsView(dataPoints: DataPoint.mock, labelCount: 3, labelFont: .caption, labelColor: .accentColor)
     }
 }
 #endif

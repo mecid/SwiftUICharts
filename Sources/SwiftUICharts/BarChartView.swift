@@ -12,7 +12,11 @@ public struct BarChartStyle: ChartStyle {
     public let barMinHeight: CGFloat
     public let showAxis: Bool
     public let axisLeadingPadding: CGFloat
+    public let showGrid: Bool
+    public let gridColor: Color
     public let showLabels: Bool
+    public let labelFont: Font
+    public let labelColor: Color
     public let labelCount: Int?
     public let showLegends: Bool
     public let barsCornerRadius: CGFloat
@@ -35,7 +39,11 @@ public struct BarChartStyle: ChartStyle {
         barMinHeight: CGFloat = 100,
         showAxis: Bool = true,
         axisLeadingPadding: CGFloat = 0,
+        showGrid: Bool = true,
+        gridColor: Color = .accentColor,
         showLabels: Bool = true,
+        labelFont: Font = .caption,
+        labelColor: Color = .accentColor,
         labelCount: Int? = nil,
         showLegends: Bool = true,
         barsCornerRadius: CGFloat = 5.0,
@@ -44,7 +52,11 @@ public struct BarChartStyle: ChartStyle {
         self.barMinHeight = barMinHeight
         self.showAxis = showAxis
         self.axisLeadingPadding = axisLeadingPadding
+        self.showGrid = showGrid
+        self.gridColor = gridColor
         self.showLabels = showLabels
+        self.labelFont = labelFont
+        self.labelColor = labelColor
         self.labelCount = labelCount
         self.showLegends = showLegends
         self.barsCornerRadius = barsCornerRadius
@@ -78,7 +90,7 @@ public struct BarChartView: View {
     private var grid: some View {
         ChartGrid(dataPoints: dataPoints)
             .stroke(
-                style.showAxis ? Color.accentColor : .clear,
+                style.showGrid ? style.gridColor : .clear,
                 style: StrokeStyle(
                     lineWidth: 1,
                     lineCap: .round,
@@ -101,7 +113,9 @@ public struct BarChartView: View {
                     if style.showLabels {
                         LabelsView(
                             dataPoints: dataPoints,
-                            labelCount: style.labelCount ?? dataPoints.count
+                            labelCount: style.labelCount ?? dataPoints.count,
+                            labelFont: style.labelFont,
+                            labelColor: style.labelColor
                         ).accessibilityHidden(true)
                     }
                 }

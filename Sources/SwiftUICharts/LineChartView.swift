@@ -104,7 +104,7 @@ public struct LineChartView: View {
             }
 
             if style.showLabels {
-                LabelsView(dataPoints: dataPoints, labelCount: style.labelCount ?? dataPoints.count)
+                LabelsView(dataPoints: dataPoints, labelCount: style.labelCount ?? dataPoints.count, labelFont: .caption, labelColor: .accentColor)
                     .accessibilityHidden(true)
             }
 
