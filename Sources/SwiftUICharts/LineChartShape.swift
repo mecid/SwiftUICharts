@@ -34,7 +34,7 @@ struct LineChartShape: Shape {
 #if DEBUG
 struct LineChartShape_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartShape(dataPoints: DataPoint.mock, closePath: true)
+        LineChartShape(dataPoints: DataPoint.mock, closePath: false)
     }
 }
 #endif

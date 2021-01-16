@@ -15,6 +15,7 @@ public struct LineChartStyle: ChartStyle {
     public let showLabels: Bool
     public let labelCount: Int?
     public let showLegends: Bool
+    public let filled: Bool
 
     /**
      Creates new line chart style with the following parameters.
@@ -34,7 +35,8 @@ public struct LineChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        filled: Bool = true
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -42,6 +44,7 @@ public struct LineChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.filled = filled
     }
 }
 
@@ -91,10 +94,18 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
+                
+                if(style.filled) {
                 LineChartShape(dataPoints: dataPoints)
                     .fill(gradient)
                     .frame(minHeight: style.lineMinHeight)
                     .background(grid)
+                } else {
+                    LineChartShape(dataPoints: dataPoints)
+                        .stroke(gradient)
+                        .frame(minHeight: style.lineMinHeight)
+                        .background(grid)
+                }
 
                 if style.showAxis {
                     AxisView(dataPoints: dataPoints)
@@ -122,8 +133,9 @@ struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
             LineChartView(dataPoints: DataPoint.mock)
-            LineChartView(dataPoints: DataPoint.mock)
-        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false))
+                .chartStyle(LineChartStyle(showAxis: false, showLabels: false))
+//            LineChartView(dataPoints: DataPoint.mock).chartStyle(LineChartStyle(filled:false))
+        }
     }
 }
 #endif
