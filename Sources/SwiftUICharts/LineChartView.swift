@@ -16,19 +16,23 @@ public struct LineChartStyle: ChartStyle {
     public let labelCount: Int?
     public let showLegends: Bool
     public let filled: Bool
-
+    public let lineWidth: CGFloat
+    
     /**
      Creates new line chart style with the following parameters.
-
+     
      - Parameters:
-        - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
-        - showAxis: Bool value that controls whenever to show axis.
-        - axisLeadingPadding: Leading padding for axis line. Default is 0.
-        - showLabels: Bool value that controls whenever to show labels.
-        - labelCount: The count of labels that should be shown below the the chart. Default is all.
-        - showLegends: Bool value that controls whenever to show legends.
+     - lineMinHeight: The minimal height for the point that presents the biggest value. Default is 100.
+     - showAxis: Bool value that controls whenever to show axis.
+     - axisLeadingPadding: Leading padding for axis line. Default is 0.
+     - showLabels: Bool value that controls whenever to show labels.
+     - labelCount: The count of labels that should be shown below the the chart. Default is all.
+     - showLegends: Bool value that controls whenever to show legends.
+     - filled: Bool value that controls the filled aspect of the chart
+     - lineWidth: the width of the line when drawing the line (filled = false)
+     
      */
-
+    
     public init(
         lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
@@ -36,7 +40,8 @@ public struct LineChartStyle: ChartStyle {
         showLabels: Bool = true,
         labelCount: Int? = nil,
         showLegends: Bool = true,
-        filled: Bool = true
+        filled: Bool = true,
+        lineWidth: CGFloat = 5
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -45,6 +50,7 @@ public struct LineChartStyle: ChartStyle {
         self.labelCount = labelCount
         self.showLegends = showLegends
         self.filled = filled
+        self.lineWidth = lineWidth
     }
 }
 
@@ -52,21 +58,21 @@ public struct LineChartStyle: ChartStyle {
 public struct LineChartView: View {
     @Environment(\.chartStyle) var chartStyle
     let dataPoints: [DataPoint]
-
+    
     /**
      Creates new line chart view with the following parameters.
-
+     
      - Parameters:
-        - dataPoints: The array of data points that will be used to draw the bar chart.
+     - dataPoints: The array of data points that will be used to draw the bar chart.
      */
     public init(dataPoints: [DataPoint]) {
         self.dataPoints = dataPoints
     }
-
+    
     private var style: LineChartStyle {
         (chartStyle as? LineChartStyle) ?? .init()
     }
-
+    
     private var gradient: LinearGradient {
         let colors = dataPoints.map(\.legend).map(\.color)
         return LinearGradient(
@@ -75,7 +81,7 @@ public struct LineChartView: View {
             endPoint: .trailing
         )
     }
-
+    
     private var grid: some View {
         ChartGrid(dataPoints: dataPoints)
             .stroke(
@@ -90,35 +96,43 @@ public struct LineChartView: View {
                 )
             )
     }
-
+    
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
                 
                 if(style.filled) {
-                LineChartShape(dataPoints: dataPoints)
-                    .fill(gradient)
-                    .frame(minHeight: style.lineMinHeight)
-                    .background(grid)
-                } else {
                     LineChartShape(dataPoints: dataPoints)
-                        .stroke(gradient)
+                        .fill(gradient)
+                        .frame(minHeight: style.lineMinHeight)
+                        .background(grid)
+                } else {
+                    LineChartShape(dataPoints: dataPoints, closePath: false)
+                        .stroke(gradient,
+                                style: StrokeStyle(
+                                    lineWidth:style.lineWidth,
+                                    lineCap: .round,
+                                    lineJoin: .round
+                                    //TODO: add the dash and others
+                                    
+                                )
+                            )
                         .frame(minHeight: style.lineMinHeight)
                         .background(grid)
                 }
-
+                
                 if style.showAxis {
                     AxisView(dataPoints: dataPoints)
                         .accessibilityHidden(true)
                         .padding(.leading, style.axisLeadingPadding)
                 }
             }
-
+            
             if style.showLabels {
                 LabelsView(dataPoints: dataPoints, labelCount: style.labelCount ?? dataPoints.count)
                     .accessibilityHidden(true)
             }
-
+            
             if style.showLegends {
                 LegendView(dataPoints: dataPoints)
                     .padding()
@@ -134,7 +148,7 @@ struct LineChartView_Previews: PreviewProvider {
         HStack {
             LineChartView(dataPoints: DataPoint.mock)
                 .chartStyle(LineChartStyle(showAxis: false, showLabels: false))
-//            LineChartView(dataPoints: DataPoint.mock).chartStyle(LineChartStyle(filled:false))
+            LineChartView(dataPoints: DataPoint.mock).chartStyle(LineChartStyle(filled:false,lineWidth: 3))
         }
     }
 }
