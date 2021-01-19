@@ -9,8 +9,13 @@ import SwiftUI
 
 /// SwiftUI view that draws bars by placing them into a vertical container.
 public struct HorizontalBarChartView: View {
+	
     let dataPoints: [DataPoint]
     let barMaxWidth: CGFloat
+	let text: ((_ bar: DataPoint) -> Text)?
+	
+	@ScaledMetric private var barHeight: CGFloat = 17
+	@ScaledMetric private var circleSize: CGFloat = 8
 
     /**
      Creates new horizontal bar chart with the following parameters.
@@ -18,10 +23,12 @@ public struct HorizontalBarChartView: View {
      - Parameters:
         - dataPoints: The array of data points that will be used to draw the bar chart.
         - barMaxWidth: The maximal width for the bar that presents the biggest value. Default is 100.
+		- text: The text to be shown next to the bar. Default is: bar.legend.label + ", " + bar.label
      */
-    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
+    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100, text: ((_ bar: DataPoint) -> Text)? = nil) {
         self.dataPoints = dataPoints
         self.barMaxWidth = barMaxWidth
+		self.text = text
     }
 
     private var max: Double {
@@ -36,34 +43,42 @@ public struct HorizontalBarChartView: View {
             ForEach(dataPoints, id: \.self) { bar in
                 #if os(watchOS)
                 VStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+					Capsule()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
+                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: barHeight)
                     HStack {
                         Circle()
                             .foregroundColor(bar.legend.color)
-                            .frame(width: 8, height: 8)
+                            .frame(width: legendCircleSize, height: circleSize)
 
-                        Text(bar.legend.label) + Text(", ") + Text(bar.label)
-
-                        // TODO: temp fix
-                        Spacer()
+						Group {
+							if let text = text?(bar) {
+								text
+							} else {
+								Text(bar.legend.label) + Text(", ") + Text(bar.label)
+							}
+						}
+						.frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
                 #else
                 HStack {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+					Capsule()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
+                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: barHeight)
 
                     Circle()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: 8, height: 8)
+                        .frame(width: circleSize, height: circleSize)
 
-                    Text(bar.legend.label) + Text(", ") + Text(bar.label)
-
-                    // TODO: temp fix
-                    Spacer()
+					Group {
+						if let text = text?(bar) {
+							text
+						} else {
+							Text(bar.legend.label) + Text(", ") + Text(bar.label)
+						}
+					}
+					.frame(maxWidth: .infinity, alignment: .leading)
                 }
                 #endif
             }
