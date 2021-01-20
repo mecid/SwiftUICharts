@@ -49,7 +49,7 @@ public struct HorizontalBarChartView: View {
                     HStack {
                         Circle()
                             .foregroundColor(bar.legend.color)
-                            .frame(width: legendCircleSize, height: circleSize)
+                            .frame(width: circleSize, height: circleSize)
 
 						Group {
 							if let text = text?(bar) {
