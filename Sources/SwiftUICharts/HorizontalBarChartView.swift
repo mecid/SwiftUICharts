@@ -13,6 +13,7 @@ public struct HorizontalBarChartView: View {
     let dataPoints: [DataPoint]
     let barMaxWidth: CGFloat
 	let text: ((_ bar: DataPoint) -> Text)?
+	let maxValue: Double
 	
 	@ScaledMetric private var barHeight: CGFloat = 17
 	@ScaledMetric private var circleSize: CGFloat = 8
@@ -23,19 +24,14 @@ public struct HorizontalBarChartView: View {
      - Parameters:
         - dataPoints: The array of data points that will be used to draw the bar chart.
         - barMaxWidth: The maximal width for the bar that presents the biggest value. Default is 100.
+		- maxValue: The max value for calculating the bar width. Default is max value from the dataPoints.
 		- text: The text to be shown next to the bar. Default is: bar.legend.label + ", " + bar.label
      */
-    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100, text: ((_ bar: DataPoint) -> Text)? = nil) {
+	public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100, maxValue: Double? = nil, text: ((_ bar: DataPoint) -> Text)? = nil) {
         self.dataPoints = dataPoints
         self.barMaxWidth = barMaxWidth
 		self.text = text
-    }
-
-    private var max: Double {
-        guard let max = dataPoints.max()?.value, max != 0 else {
-            return 1
-        }
-        return max
+		self.maxValue = max(maxValue ?? 1, dataPoints.max()?.value ?? 1)
     }
 
     public var body: some View {
@@ -45,7 +41,7 @@ public struct HorizontalBarChartView: View {
                 VStack(alignment: .leading) {
 					Capsule()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: barHeight)
+                        .frame(width: CGFloat(bar.value / maxValue) * barMaxWidth, height: barHeight)
                     HStack {
                         Circle()
                             .foregroundColor(bar.legend.color)
@@ -65,7 +61,7 @@ public struct HorizontalBarChartView: View {
                 HStack {
 					Capsule()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: barHeight)
+                        .frame(width: CGFloat(bar.value / maxValue) * barMaxWidth, height: barHeight)
 
                     Circle()
                         .foregroundColor(bar.legend.color)
