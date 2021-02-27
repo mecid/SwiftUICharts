@@ -97,7 +97,7 @@ public struct LineChartView: View {
                     .background(grid)
 
                 if style.showAxis {
-                    AxisView(dataPoints: dataPoints)
+                    AxisView(dataPoints: dataPoints, labelColor: .accentColor, labelFont: .caption)
                         .accessibilityHidden(true)
                         .padding(.leading, style.axisLeadingPadding)
                 }

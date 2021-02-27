@@ -9,19 +9,21 @@ import SwiftUI
 
 struct AxisView: View {
     let dataPoints: [DataPoint]
+    let labelColor: Color
+    let labelFont: Font
 
     var body: some View {
         VStack {
             dataPoints.max().map {
                 Text(String(Int($0.value)))
-                    .foregroundColor(.accentColor)
-                    .font(.caption)
+                    .foregroundColor(labelColor)
+                    .font(labelFont)
             }
             Spacer()
             dataPoints.max().map {
                 Text(String(Int($0.value / 2)))
-                    .foregroundColor(.accentColor)
-                    .font(.caption)
+                    .foregroundColor(labelColor)
+                    .font(labelFont)
             }
             Spacer()
         }
@@ -31,7 +33,7 @@ struct AxisView: View {
 #if DEBUG
 struct AxisView_Previews: PreviewProvider {
     static var previews: some View {
-        AxisView(dataPoints: DataPoint.mock)
+        AxisView(dataPoints: DataPoint.mock, labelColor: .accentColor, labelFont: .caption)
     }
 }
 #endif

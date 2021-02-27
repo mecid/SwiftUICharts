@@ -9,9 +9,17 @@ import SwiftUI
 
 /// Type that defines a bar chart style.
 public struct BarChartStyle: ChartStyle {
+    
+    public enum AxisPosition {
+        case leading
+        case trailing
+        case hidden
+    }
+
+    public var showAxis: Bool = true
     public let barMinHeight: CGFloat
-    public let showAxis: Bool
-    public let axisLeadingPadding: CGFloat
+    public let axisPosition: AxisPosition
+    public let axisPadding: CGFloat
     public let showGrid: Bool
     public let gridColor: Color
     public let showLabels: Bool
@@ -27,8 +35,8 @@ public struct BarChartStyle: ChartStyle {
 
      - Parameters:
         - barMinHeight: The minimal height for the bar that presents the biggest value. Default is 100.
-        - showAxis: Bool value that controls whenever to show axis.
-        - axisLeadingPadding: Leading padding for axis line. Default is 0.
+        - axisPosition: AxisPosition the position on the axis
+        - axisPadding: CGFloat padding for axis line. Default is 0.
         - showLabels: Bool value that controls whenever to show labels.
         - labelCount: The count of labels that should be shown below the chart. Default is all.
         - showLegends: Bool value that controls whenever to show legends.
@@ -37,7 +45,7 @@ public struct BarChartStyle: ChartStyle {
      */
     public init(
         barMinHeight: CGFloat = 100,
-        showAxis: Bool = true,
+        axisPosition: AxisPosition = .trailing,
         axisLeadingPadding: CGFloat = 0,
         showGrid: Bool = true,
         gridColor: Color = .accentColor,
@@ -50,8 +58,8 @@ public struct BarChartStyle: ChartStyle {
         barsCorners: UIRectCorner = []
     ) {
         self.barMinHeight = barMinHeight
-        self.showAxis = showAxis
-        self.axisLeadingPadding = axisLeadingPadding
+        self.axisPosition = axisPosition
+        self.axisPadding = axisLeadingPadding
         self.showGrid = showGrid
         self.gridColor = gridColor
         self.showLabels = showLabels
@@ -105,8 +113,15 @@ public struct BarChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
+                if style.axisPosition == .leading {
+                    AxisView(dataPoints: dataPoints, labelColor: style.labelColor, labelFont: style.labelFont)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .accessibilityHidden(true)
+                        .padding(.trailing, style.axisPadding)
+                }
+
                 VStack {
-                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: style.showAxis, barsCornerRadius: style.barsCornerRadius, barsCorners: style.barsCorners)
+                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: style.axisPosition != .hidden, barsCornerRadius: style.barsCornerRadius, barsCorners: style.barsCorners)
                         .frame(minHeight: style.barMinHeight)
                         .background(grid)
 
@@ -119,11 +134,11 @@ public struct BarChartView: View {
                         ).accessibilityHidden(true)
                     }
                 }
-                if style.showAxis {
-                    AxisView(dataPoints: dataPoints)
+                if style.axisPosition == .trailing {
+                    AxisView(dataPoints: dataPoints, labelColor: style.labelColor, labelFont: style.labelFont)
                         .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
-                        .padding(.leading, style.axisLeadingPadding)
+                        .padding(.leading, style.axisPadding)
                 }
             }
 
