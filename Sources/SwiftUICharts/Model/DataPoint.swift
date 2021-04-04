@@ -9,9 +9,9 @@ import SwiftUI
 
 /// The type that describes the group of data points in the chart.
 public struct Legend {
-    let color: Color
-    let label: LocalizedStringKey
-    let order: Int
+	public let color: Color
+	public let label: LocalizedStringKey
+	public let order: Int
 
     /**
      Creates new legend with the following parameters.
