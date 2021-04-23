@@ -42,7 +42,8 @@ extension Legend: Hashable {
 
 /// The type that describes a data point in the chart.
 public struct DataPoint {
-    public let value: Double
+    public let startValue: Double
+    public let endValue: Double
     public let label: LocalizedStringKey
     public let legend: Legend
     public let visible: Bool
@@ -57,23 +58,50 @@ public struct DataPoint {
         - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
      */
     public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
-        self.value = value
+        self.startValue = 0
+        self.endValue = value
         self.label = label
         self.legend = legend
         self.visible = visible
     }
+
+    /**
+     Creates new data point with the following parameters.
+
+    - Parameters:
+        - startValue: Double that represents a start value of the point in the chart.
+        - endValue: Double that represents an end value of the point in the chart.
+        - label: LocalizedStringKey that describes the point.
+        - legend: The legend of data point, usually appears below the chart.
+        - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
+    */
+    public init(
+        startValue: Double,
+        endValue: Double,
+        label: LocalizedStringKey,
+        legend: Legend,
+        visible: Bool = true
+    ) {
+        self.startValue = startValue
+        self.endValue = endValue
+        self.label = label
+        self.legend = legend
+        self.visible = visible
+    }
+
 }
 
 extension DataPoint: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(legend)
-        hasher.combine(value)
+        hasher.combine(startValue)
+        hasher.combine(endValue)
     }
 }
 
 extension DataPoint: Comparable {
     public static func < (lhs: DataPoint, rhs: DataPoint) -> Bool {
-        lhs.value < rhs.value
+        lhs.endValue < rhs.endValue
     }
 }
 
