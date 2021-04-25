@@ -25,7 +25,7 @@ public struct HorizontalBarChartView: View {
     }
 
     private var max: Double {
-        guard let max = dataPoints.max()?.value, max != 0 else {
+        guard let max = dataPoints.max()?.endValue, max != 0 else {
             return 1
         }
         return max
@@ -54,7 +54,7 @@ public struct HorizontalBarChartView: View {
                 HStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / self.max) * barMaxWidth, height: 16)
+                        .frame(width: CGFloat(bar.endValue / self.max) * barMaxWidth, height: 16)
 
                     Circle()
                         .foregroundColor(bar.legend.color)
