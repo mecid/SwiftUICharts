@@ -74,7 +74,7 @@ public struct LineChartView: View {
     }
 
     private var grid: some View {
-        ChartGrid(dataPoints: dataPoints)
+        ChartGrid()
             .stroke(
                 style.showAxis ? Color.secondary : .clear,
                 style: StrokeStyle(
