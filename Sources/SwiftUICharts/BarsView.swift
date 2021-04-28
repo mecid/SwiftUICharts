@@ -13,7 +13,7 @@ struct BarsView: View {
     let showAxis: Bool
 
     private var max: Double {
-        guard let max = dataPoints.max()?.value, max != 0 else {
+        guard let max = dataPoints.max()?.endValue, max != 0 else {
             return 1
         }
         return max
@@ -28,7 +28,8 @@ struct BarsView: View {
                             .fill(bar.legend.color)
                             .accessibilityLabel(Text(bar.label))
                             .accessibilityValue(Text(bar.legend.label))
-                            .frame(height: CGFloat(bar.value / self.max) * geometry.size.height)
+                            .offset(y: -CGFloat(bar.startValue))
+                            .frame(height: CGFloat((bar.endValue-bar.startValue) / self.max) * geometry.size.height)
                     }
                 }.frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
 
@@ -42,7 +43,7 @@ struct BarsView: View {
                             .foregroundColor(.white)
                             .background(limit.legend.color)
                             .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                    }.offset(y: CGFloat(limit.value / self.max) * geometry.size.height / -2)
+                    }.offset(y: CGFloat(limit.endValue / self.max) * geometry.size.height / -2)
                 }
             }
         }
