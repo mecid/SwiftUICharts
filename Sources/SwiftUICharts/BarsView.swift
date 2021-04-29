@@ -28,8 +28,8 @@ struct BarsView: View {
                             .fill(bar.legend.color)
                             .accessibilityLabel(Text(bar.label))
                             .accessibilityValue(Text(bar.legend.label))
-                            .offset(y: -CGFloat(bar.startValue))
-                            .frame(height: CGFloat((bar.endValue-bar.startValue) / self.max) * geometry.size.height)
+                            .offset(y: -CGFloat(bar.startValue / max) * geometry.size.height)
+                            .frame(height: CGFloat((bar.endValue-bar.startValue) / max) * geometry.size.height)
                     }
                 }.frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
 
