@@ -24,29 +24,37 @@ struct BarsView: View {
             ZStack(alignment: .bottomTrailing) {
                 HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 2) {
                     ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
-                        Capsule(style: .continuous)
-                            .fill(bar.legend.color)
-                            .accessibilityLabel(Text(bar.label))
-                            .accessibilityValue(Text(bar.legend.label))
-                            .offset(y: -CGFloat(bar.startValue / max) * geometry.size.height)
-                            .frame(height: CGFloat((bar.endValue-bar.startValue) / max) * geometry.size.height)
+                        barView(for: bar, in: geometry)
                     }
                 }.frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
 
                 limit.map { limit in
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .frame(height: 4)
-                            .foregroundColor(limit.legend.color)
-                        Text(limit.label)
-                            .padding(.horizontal)
-                            .foregroundColor(.white)
-                            .background(limit.legend.color)
-                            .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                    }.offset(y: CGFloat(limit.endValue / self.max) * geometry.size.height / -2)
+                    limitView(for: limit, in: geometry)
                 }
             }
         }
+    }
+
+    private func barView(for point: DataPoint, in geometry: GeometryProxy) -> some View {
+        Capsule(style: .continuous)
+            .fill(point.legend.color)
+            .accessibilityLabel(Text(point.label))
+            .accessibilityValue(Text(point.legend.label))
+            .offset(y: -CGFloat(point.startValue / max) * geometry.size.height)
+            .frame(height: CGFloat((point.endValue-point.startValue) / max) * geometry.size.height)
+    }
+
+    private func limitView(for limit: DataPoint, in geometry: GeometryProxy) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .frame(height: 4)
+                .foregroundColor(limit.legend.color)
+            Text(limit.label)
+                .padding(.horizontal)
+                .foregroundColor(.white)
+                .background(limit.legend.color)
+                .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+        }.offset(y: CGFloat(limit.endValue / self.max) * geometry.size.height / -2)
     }
 }
 
