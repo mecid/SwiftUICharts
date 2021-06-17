@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+/// Protocol type that defines general chart styling options
 public protocol ChartStyle {
     var showLabels: Bool { get }
     var showAxis: Bool { get }
