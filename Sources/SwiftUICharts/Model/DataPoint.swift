@@ -9,8 +9,13 @@ import SwiftUI
 
 /// The type that describes the group of data points in the chart.
 public struct Legend {
+    /// Color representing the legend
     let color: Color
+
+    /// Localized string key representing the legend
     let label: LocalizedStringKey
+
+    /// Integer representing the value to sort the array of legends
     let order: Int
 
     /**
