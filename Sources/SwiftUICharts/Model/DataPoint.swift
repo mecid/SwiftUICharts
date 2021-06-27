@@ -47,10 +47,19 @@ extension Legend: Hashable {
 
 /// The type that describes a data point in the chart.
 public struct DataPoint {
+    /// Starting point of a bar (used only in the ``BarChartView``)
     public let startValue: Double
+
+    /// Double value representing the data point
     public let endValue: Double
+
+    /// LocalizedStringKey representing the data point
     public let label: LocalizedStringKey
+
+    /// ``Legend`` value representing the data point
     public let legend: Legend
+
+    /// Swift.Bool value controlling the visibility of the data point in the chart
     public let visible: Bool
 
     /**
