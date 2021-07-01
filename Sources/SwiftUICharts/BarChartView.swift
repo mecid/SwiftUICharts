@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Type that defines a bar chart style.
 public struct BarChartStyle: ChartStyle {
-    /// Minimal height for a bar chart style
+    /// Minimal height for a bar chart view
     public let barMinHeight: CGFloat
 
     public let showAxis: Bool
