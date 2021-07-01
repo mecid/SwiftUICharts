@@ -47,6 +47,7 @@ public struct DataPoint {
     public let label: LocalizedStringKey
     public let legend: Legend
     public let visible: Bool
+    public let customId: String
 
     /**
      Creates new data point with the following parameters.
@@ -57,12 +58,13 @@ public struct DataPoint {
         - legend: The legend of data point, usually appears below the chart.
         - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
      */
-    public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
+    public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true, customId: String = "") {
         self.startValue = 0
         self.endValue = value
         self.label = label
         self.legend = legend
         self.visible = visible
+        self.customId = customId
     }
 
     /**
@@ -80,13 +82,15 @@ public struct DataPoint {
         endValue: Double,
         label: LocalizedStringKey,
         legend: Legend,
-        visible: Bool = true
+        visible: Bool = true,
+        customId: String = ""
     ) {
         self.startValue = startValue
         self.endValue = endValue
         self.label = label
         self.legend = legend
         self.visible = visible
+        self.customId = customId
     }
 
 }
