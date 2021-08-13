@@ -38,6 +38,10 @@ extension Legend: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(color)
     }
+	
+	public static func ==(lhs: Legend, rhs: Legend) -> Bool {
+		return lhs.color == rhs.color
+	}
 }
 
 /// The type that describes a data point in the chart.
@@ -69,6 +73,10 @@ extension DataPoint: Hashable {
         hasher.combine(legend)
         hasher.combine(value)
     }
+	
+	public static func ==(lhs: DataPoint, rhs: DataPoint) -> Bool {
+		return lhs.legend == rhs.legend && lhs.value == rhs.value
+	}
 }
 
 extension DataPoint: Comparable {
