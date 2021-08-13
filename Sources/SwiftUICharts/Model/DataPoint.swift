@@ -9,8 +9,13 @@ import SwiftUI
 
 /// The type that describes the group of data points in the chart.
 public struct Legend {
+    /// Color representing the legend
 	public let color: Color
+
+    /// Localized string key representing the legend
 	public let label: LocalizedStringKey
+
+    /// Integer representing the value to sort the array of legends
 	public let order: Int
 
     /**
@@ -46,9 +51,19 @@ extension Legend: Hashable {
 
 /// The type that describes a data point in the chart.
 public struct DataPoint {
-    public let value: Double
+    /// Starting point of a bar (used only in the ``BarChartView``)
+    public let startValue: Double
+
+    /// Double value representing the data point
+    public let endValue: Double
+
+    /// LocalizedStringKey representing the data point
     public let label: LocalizedStringKey
+
+    /// ``Legend`` value representing the data point
     public let legend: Legend
+
+    /// Swift.Bool value controlling the visibility of the data point in the chart
     public let visible: Bool
 
     /**
@@ -61,7 +76,32 @@ public struct DataPoint {
         - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
      */
     public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
-        self.value = value
+        self.startValue = 0
+        self.endValue = value
+        self.label = label
+        self.legend = legend
+        self.visible = visible
+    }
+
+    /**
+     Creates new data point with the following parameters.
+
+    - Parameters:
+        - startValue: Double that represents a start value of the point in the chart.
+        - endValue: Double that represents an end value of the point in the chart.
+        - label: LocalizedStringKey that describes the point.
+        - legend: The legend of data point, usually appears below the chart.
+        - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
+    */
+    public init(
+        startValue: Double,
+        endValue: Double,
+        label: LocalizedStringKey,
+        legend: Legend,
+        visible: Bool = true
+    ) {
+        self.startValue = startValue
+        self.endValue = endValue
         self.label = label
         self.legend = legend
         self.visible = visible
@@ -71,17 +111,20 @@ public struct DataPoint {
 extension DataPoint: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(legend)
-        hasher.combine(value)
+        hasher.combine(startValue)
+        hasher.combine(endValue)
     }
 	
 	public static func ==(lhs: DataPoint, rhs: DataPoint) -> Bool {
-		return lhs.legend == rhs.legend && lhs.value == rhs.value
+		return lhs.legend == rhs.legend &&
+			lhs.startValue == rhs.startValue &&
+			lhs.endValue == rhs.endValue
 	}
 }
 
 extension DataPoint: Comparable {
     public static func < (lhs: DataPoint, rhs: DataPoint) -> Bool {
-        lhs.value < rhs.value
+        lhs.endValue < rhs.endValue
     }
 }
 

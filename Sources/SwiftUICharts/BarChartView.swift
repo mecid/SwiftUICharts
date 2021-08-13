@@ -9,11 +9,17 @@ import SwiftUI
 
 /// Type that defines a bar chart style.
 public struct BarChartStyle: ChartStyle {
+    /// Minimal height for a bar chart view
     public let barMinHeight: CGFloat
+
     public let showAxis: Bool
+    /// Leading padding for the value axis displayed in the chart
     public let axisLeadingPadding: CGFloat
+
     public let showLabels: Bool
+    /// The count of labels that should be shown below the chart. Nil value shows all the labels.
     public let labelCount: Int?
+
     public let showLegends: Bool
     /**
      Creates new bar chart style with the following parameters.
@@ -67,7 +73,7 @@ public struct BarChartView: View {
     }
 
     private var grid: some View {
-        ChartGrid(dataPoints: dataPoints)
+        ChartGrid()
             .stroke(
                 style.showAxis ? Color.accentColor : .clear,
                 style: StrokeStyle(

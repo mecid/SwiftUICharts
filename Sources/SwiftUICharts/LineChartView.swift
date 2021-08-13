@@ -9,10 +9,13 @@ import SwiftUI
 
 /// Type that defines a line chart style.
 public struct LineChartStyle: ChartStyle {
+    /// Minimal height for a line chart view
     public let lineMinHeight: CGFloat
     public let showAxis: Bool
+    /// Leading padding for the value axis displayed in the chart
     public let axisLeadingPadding: CGFloat
     public let showLabels: Bool
+    /// The count of labels that should be shown below the chart. Nil value shows all the labels.
     public let labelCount: Int?
     public let showLegends: Bool
 
@@ -74,7 +77,7 @@ public struct LineChartView: View {
     }
 
     private var grid: some View {
-        ChartGrid(dataPoints: dataPoints)
+        ChartGrid()
             .stroke(
                 style.showAxis ? Color.secondary : .clear,
                 style: StrokeStyle(

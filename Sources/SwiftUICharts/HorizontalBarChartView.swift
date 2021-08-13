@@ -31,7 +31,7 @@ public struct HorizontalBarChartView: View {
         self.dataPoints = dataPoints
         self.barMaxWidth = barMaxWidth
 		self.text = text
-		self.maxValue = max(maxValue ?? 1, dataPoints.max()?.value ?? 1)
+		self.maxValue = max(maxValue ?? 1, dataPoints.max()?.endValue ?? 1)
     }
 
     public var body: some View {
@@ -41,7 +41,7 @@ public struct HorizontalBarChartView: View {
                 VStack(alignment: .leading) {
 					Capsule()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / maxValue) * barMaxWidth, height: barHeight)
+                        .frame(width: CGFloat(bar.endValue / maxValue) * barMaxWidth, height: barHeight)
                     HStack {
                         Circle()
                             .foregroundColor(bar.legend.color)
@@ -61,7 +61,7 @@ public struct HorizontalBarChartView: View {
                 HStack {
 					Capsule()
                         .foregroundColor(bar.legend.color)
-                        .frame(width: CGFloat(bar.value / maxValue) * barMaxWidth, height: barHeight)
+                        .frame(width: CGFloat(bar.endValue / maxValue) * barMaxWidth, height: barHeight)
 
                     Circle()
                         .foregroundColor(bar.legend.color)
