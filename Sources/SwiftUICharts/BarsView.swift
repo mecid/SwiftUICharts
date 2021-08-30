@@ -13,7 +13,11 @@ struct BarsView: View {
   let dataPoints: [DataPoint]
   let limit: DataPoint?
   let showAxis: Bool
+  let showLabels: Bool
+  let everyNthLabel: Int?
+  let labelHeight: CGFloat
   let maxBarWidth: CGFloat
+  
   
   private var max: Double {
     guard let max = dataPoints.max()?.endValue, max != 0 else {
@@ -25,13 +29,37 @@ struct BarsView: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack(alignment: .bottomLeading) {
-        HStack(alignment: .bottom, spacing: dataPoints.count > 40 ? 0 : 5) {
-          ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
-            barView(for: bar, in: geometry)
+        VStack(alignment: .leading, spacing: 0) {
+          HStack(alignment: .bottom, spacing: barSpacing) {
+            ForEach(dataPoints.filter(\.visible).indexed(),
+                    id: \.1.self) { index, bar in
+              barView(for: bar, index: index, in: geometry)
+            }
+          }
+          .frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
+          .padding(.top)
+          
+          if showLabels {
+            HStack(spacing: barSpacing) {
+              ForEach(dataPoints.filter(\.visible).indexed(),
+                      id: \.1.self) { index, bar in
+                if let everyNthLabel = everyNthLabel {
+                  if index % everyNthLabel == 0 {
+                    Text(bar.label)
+                      .foregroundColor(.accentColor)
+                      .frame(maxWidth: maxLabelWidth, alignment: .bottomLeading)
+                      .padding(.horizontal, 2)
+                  }
+                } else {
+                  Text(bar.label)
+                    .foregroundColor(.accentColor)
+                    .frame(maxWidth: maxLabelWidth, alignment: .center)
+                }
+              }
+            }
+            .frame(height: labelHeight)
           }
         }
-        .frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
-        .padding(.top)
         
         limit.map { limit in
           limitView(for: limit, in: geometry)
@@ -40,14 +68,32 @@ struct BarsView: View {
     }
   }
   
+  private var barSpacing: CGFloat {
+    dataPoints.count > 40 ? 0 : 5
+  }
+  
+  private var maxLabelWidth: CGFloat {
+    var result = maxBarWidth
+    
+    if let everyNthLabel = everyNthLabel {
+      result = maxBarWidth * CGFloat(everyNthLabel)
+    }
+    
+    return result
+  }
+  
   private func barView(for point: DataPoint,
+                       index: Int,
                        in geometry: GeometryProxy) -> some View {
-    Capsule(style: .continuous)
+    let topCut = showLabels ? labelHeight : 0
+    let y = -CGFloat(point.startValue / max) * geometry.size.height
+    
+    return Capsule(style: .continuous)
       .fill(point.legend.color)
       .accessibilityLabel(Text(point.label))
       .accessibilityValue(Text(point.legend.label))
-      .offset(y: -CGFloat(point.startValue / max) * geometry.size.height)
-      .frame(height: CGFloat((point.endValue-point.startValue) / max) * geometry.size.height)
+      .offset(y: y)
+      .frame(height: CGFloat((point.endValue-point.startValue) / max) * geometry.size.height - topCut)
       .frame(maxWidth: maxBarWidth)
   }
   
@@ -76,11 +122,17 @@ struct BarsView_Previews: PreviewProvider {
     BarsView(dataPoints: DataPoint.mockFewData,
              limit: DataPoint.mockLimit,
              showAxis: true,
+             showLabels: true,
+             everyNthLabel: nil,
+             labelHeight: 22,
              maxBarWidth: 20)
     
     BarsView(dataPoints: DataPoint.mock,
              limit: nil,
              showAxis: true,
+             showLabels: true,
+             everyNthLabel: 3,
+             labelHeight: 22,
              maxBarWidth: 20)
   }
 }

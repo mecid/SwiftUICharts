@@ -9,51 +9,6 @@
 //
 import SwiftUI
 
-/// Type that defines a bar chart style.
-public struct BarChartStyle: ChartStyle {
-  /// Minimal height for a bar chart view
-  public let barMinHeight: CGFloat
-  
-  public let barMaxWidth: CGFloat
-  
-  public let showAxis: Bool
-  /// Leading padding for the value axis displayed in the chart
-  public let axisLeadingPadding: CGFloat
-  
-  public let showLabels: Bool
-  /// The count of labels that should be shown below the chart. Nil value shows all the labels.
-  public let labelCount: Int?
-  
-  public let showLegends: Bool
-  /**
-   Creates new bar chart style with the following parameters.
-   
-   - Parameters:
-   - barMinHeight: The minimal height for the bar that presents the biggest value. Default is 100.
-   - showAxis: Bool value that controls whenever to show axis.
-   - axisLeadingPadding: Leading padding for axis line. Default is 0.
-   - showLabels: Bool value that controls whenever to show labels.
-   - labelCount: The count of labels that should be shown below the chart. Default is all.
-   - showLegends: Bool value that controls whenever to show legends.
-   */
-  public init(
-    barMinHeight: CGFloat = 100,
-    barMaxWidth: CGFloat = 20,
-    showAxis: Bool = true,
-    axisLeadingPadding: CGFloat = 0,
-    showLabels: Bool = true,
-    labelCount: Int? = nil,
-    showLegends: Bool = true
-  ) {
-    self.barMinHeight = barMinHeight
-    self.barMaxWidth = barMaxWidth
-    self.showAxis = showAxis
-    self.axisLeadingPadding = axisLeadingPadding
-    self.showLabels = showLabels
-    self.labelCount = labelCount
-    self.showLegends = showLegends
-  }
-}
 
 /// SwiftUI view that draws bars by placing them into a horizontal container.
 public struct BarChartView: View {
@@ -79,44 +34,36 @@ public struct BarChartView: View {
   }
   
   private var grid: some View {
-    ChartGrid()
-      .stroke(
-        style.showAxis ? Color.accentColor : .clear,
-        style: StrokeStyle(
-          lineWidth: 1,
-          lineCap: .round,
-          lineJoin: .round,
-          miterLimit: 0,
-          dash: [1, 8],
-          dashPhase: 0
-        )
-      )
+    ChartGridView(gridLines: style.gridLines,
+                  showLabels: style.showLabels,
+                  labelsHeight: style.labelHeight)
   }
   
   public var body: some View {
-    VStack {
-      HStack(spacing: 0) {
-        VStack {
+    VStack(alignment: .leading, spacing: 0) {
+      VStack {
+        HStack(spacing: 0) {
           BarsView(dataPoints: dataPoints,
                    limit: limit,
                    showAxis: style.showAxis,
+                   showLabels: style.showLabels,
+                   everyNthLabel: style.everyNthLabel,
+                   labelHeight: style.labelHeight,
                    maxBarWidth: style.barMaxWidth)
             .frame(minHeight: style.barMinHeight)
             .background(grid)
           
-          if style.showLabels {
-            LabelsView(
-              dataPoints: dataPoints,
-              labelCount: style.labelCount ?? dataPoints.count
-            ).accessibilityHidden(true)
+          if style.showAxis {
+            AxisView(dataPoints: dataPoints,
+                     gridLines: style.gridLines,
+                     showLabels: style.showLabels,
+                     labelsHeight: style.labelHeight)
+              .fixedSize(horizontal: true, vertical: false)
+              .accessibilityHidden(true)
+              .padding(.leading, style.axisLeadingPadding)
           }
         }
-        if style.showAxis {
-          AxisView(dataPoints: dataPoints)
-            .fixedSize(horizontal: true, vertical: false)
-            .accessibilityHidden(true)
-            .padding(.leading, style.axisLeadingPadding)
-        }
+        .padding(.top)
       }
       
       if style.showLegends {
@@ -130,15 +77,28 @@ public struct BarChartView: View {
 
 #if DEBUG
 struct BarChartView_Previews : PreviewProvider {
+  static let limit = Legend(color: .purple, label: "Trend")
+  
+  static let limitBar = DataPoint(value: 100, label: "Trend", legend: limit)
+  
+  static let style = BarChartStyle(barMinHeight: 200.0,
+                                   axisLeadingPadding: 5,
+                                   showLabels: true,
+                                   everyNthLabel: 5,
+                                   showLegends: false,
+                                   gridLines: 5)
+  
+  
   static var previews: some View {
-    let limit = Legend(color: .purple, label: "Trend")
-    let limitBar = DataPoint(value: 100, label: "Trend", legend: limit)
-    
-    return HStack(spacing: 0) {
-      BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
-      BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
+    Form {
+      Section(header: Text("charts")) {
+        HStack(spacing: 0) {
+          BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
+//          BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
+        }
+        .chartStyle(style)
+      }
     }
-    .chartStyle(BarChartStyle(showLabels: false, showLegends: false))
   }
 }
 #endif

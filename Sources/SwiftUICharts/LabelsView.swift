@@ -9,10 +9,10 @@ import SwiftUI
 
 struct LabelsView: View {
     let dataPoints: [DataPoint]
-    let labelCount: Int
+    let everyNthLabel: Int
 
     private var threshold: Int {
-        let threshold = Double(dataPoints.count) / Double(labelCount)
+        let threshold = Double(dataPoints.count) / Double(everyNthLabel)
         return Int(threshold.rounded(.awayFromZero))
     }
 
@@ -20,11 +20,11 @@ struct LabelsView: View {
         HStack(spacing: 0) {
             ForEach(dataPoints.indexed(), id: \.1.self) { index, bar in
                 if index % self.threshold == 0 {
-                    Text(bar.label)
-                        .multilineTextAlignment(.center)
+                    Text(bar.label) + Text(" ")
+//                        .multilineTextAlignment(.center)
                         .foregroundColor(.accentColor)
-                        .font(.caption)
-                    Spacer()
+//                        .font(.caption)
+//                    Spacer()
                 }
             }
         }
@@ -34,7 +34,7 @@ struct LabelsView: View {
 #if DEBUG
 struct LabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelsView(dataPoints: DataPoint.mock, labelCount: 3)
+        LabelsView(dataPoints: DataPoint.mock, everyNthLabel: 3)
     }
 }
 #endif
