@@ -178,7 +178,7 @@ extension DataPoint {
     return [
       .init(value: 45, label: "1", legend: low),
       .init(value: 90, label: "2", legend: warmUp),
-      .init(value: 91, label: "3", legend: fatBurning),
+      .init(value: 103, label: "3", legend: fatBurning),
       .init(value: 92, label: "4", legend: buildFitness),
       .init(value: 78, label: "5", legend: highIntensity),
     ]

@@ -14,18 +14,19 @@ struct AxisView: View {
   let gridLines: Int
   let showLabels: Bool
   let labelsHeight: CGFloat
+  let toNearest: Int
   
   var body: some View {
     GeometryReader { geometry in
       let padding = showLabels ? labelsHeight : 0
       let count = gridLines - 1
-      let step = maxValue / Double(count)
+      let step = CGFloat(maxLabelValue / CGFloat(count))
       let height = geometry.size.height - padding
       
       ForEach(0...count, id: \.self) { index in
         let y: CGFloat = height - (height / CGFloat(count) * CGFloat(index)) - 7
         
-        Text(String(Int(step * Double(index))))
+        Text(String(format: "%.0f", step * CGFloat(index)))
           .font(.caption)
           .foregroundColor(.accentColor)
           .offset(y: y)
@@ -39,6 +40,10 @@ struct AxisView: View {
     
     return max.endValue
   }
+  
+  private var maxLabelValue: Double {
+    round(maxValue + maxValue * 0.15, toNearest: Double(toNearest))
+  }
 }
 
 #if DEBUG
@@ -49,7 +54,8 @@ struct AxisView_Previews: PreviewProvider {
       AxisView(dataPoints: DataPoint.mock,
                gridLines: 5,
                showLabels: true,
-               labelsHeight: 22)
+               labelsHeight: 22,
+               toNearest: 3)
         .padding(.leading)
     }
     .padding()

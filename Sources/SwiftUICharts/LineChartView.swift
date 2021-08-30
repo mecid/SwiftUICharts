@@ -13,9 +13,7 @@ import SwiftUI
 public struct LineChartStyle: ChartStyle {
   /// Minimal height for a line chart view
   public let lineMinHeight: CGFloat
-  public let showAxis: Bool
-  /// Leading padding for the value axis displayed in the chart
-  public let axisLeadingPadding: CGFloat
+  
   public let showLabels: Bool
   
   /// Only every nth label is shown below the chart. Nil value shows all the labels.
@@ -26,8 +24,8 @@ public struct LineChartStyle: ChartStyle {
   
   public let showLegends: Bool
   
-  /// The number of grid lines to be shown (including min and max lines)
-  public let gridLines: Int
+  public let gridStyle: GridStyle
+  
   
   /**
    Creates new line chart style with the following parameters.
@@ -46,23 +44,19 @@ public struct LineChartStyle: ChartStyle {
   
   public init(
     lineMinHeight: CGFloat = 100,
-    showAxis: Bool = true,
-    axisLeadingPadding: CGFloat = 0,
     showLabels: Bool = true,
     everyNthLabel: Int? = nil,
     labelHeight: CGFloat = 22,
     labelCount: Int? = nil,
     showLegends: Bool = true,
-    gridLines: Int = 3
+    gridStyle: GridStyle = GridStyle()
   ) {
     self.lineMinHeight = lineMinHeight
-    self.showAxis = showAxis
-    self.axisLeadingPadding = axisLeadingPadding
     self.showLabels = showLabels
     self.everyNthLabel = everyNthLabel
     self.labelHeight = labelHeight
     self.showLegends = showLegends
-    self.gridLines = gridLines
+    self.gridStyle = gridStyle
   }
 }
 
@@ -108,13 +102,14 @@ public struct LineChartView: View {
           .frame(minHeight: style.lineMinHeight)
           .background(grid)
         
-        if style.showAxis {
+        if style.gridStyle.showAxis {
           AxisView(dataPoints: dataPoints,
-                   gridLines: style.gridLines,
+                   gridLines: style.gridStyle.gridLines,
                    showLabels: style.showLabels,
-                   labelsHeight: style.labelHeight)
+                   labelsHeight: style.labelHeight,
+                   toNearest: style.gridStyle.roundToNearest)
             .accessibilityHidden(true)
-            .padding(.leading, style.axisLeadingPadding)
+            .padding(.leading, style.gridStyle.axisLeadingPadding)
         }
       }
       
@@ -138,7 +133,7 @@ struct LineChartView_Previews: PreviewProvider {
     HStack {
       LineChartView(dataPoints: DataPoint.mock)
       LineChartView(dataPoints: DataPoint.mock)
-    }.chartStyle(LineChartStyle(showAxis: false, showLabels: false))
+    }.chartStyle(LineChartStyle(showLabels: false))
   }
 }
 #endif

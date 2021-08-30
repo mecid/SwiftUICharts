@@ -9,22 +9,12 @@
 import SwiftUI
 
 /// Protocol type that defines general chart styling options
-public protocol ChartStyle {
-  /// Boolean value indicating whenever show chart labels
-  var showLabels: Bool { get }
-  
-  /// Boolean value indicating whenever show chart axis
-  var showAxis: Bool { get }
-  
-  /// Leading padding for the value axis displayed in the chart
-  var axisLeadingPadding: CGFloat { get }
-  
+public protocol ChartStyle {  
   /// Boolean value indicating whenever show chart legends
   var showLegends: Bool { get }
-  
-  /// The number of grid lines to be shown (including min and max lines)
-  var gridLines: Int { get }
-  
+ 
+  /// The style to be used for drawing the chart’s grid
+  var gridStyle: GridStyle { get }
 }
 
 struct ChartStyleEnvironmentKey: EnvironmentKey {
