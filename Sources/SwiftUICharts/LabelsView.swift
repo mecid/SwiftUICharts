@@ -7,8 +7,8 @@
 //
 import SwiftUI
 
-struct LabelsView: View {
-    let dataPoints: [DataPoint]
+struct LabelsView<BaseData: Hashable>: View {
+  let dataPoints: [DataPoint<BaseData>]
     let everyNthLabel: Int
 
     private var threshold: Int {
@@ -34,7 +34,7 @@ struct LabelsView: View {
 #if DEBUG
 struct LabelsView_Previews: PreviewProvider {
     static var previews: some View {
-        LabelsView(dataPoints: DataPoint.mock, everyNthLabel: 3)
+        LabelsView<Int>(dataPoints: DataPoint.mock, everyNthLabel: 3)
     }
 }
 #endif

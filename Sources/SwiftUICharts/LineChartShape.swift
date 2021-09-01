@@ -6,8 +6,8 @@
 //
 import SwiftUI
 
-struct LineChartShape: Shape {
-    let dataPoints: [DataPoint]
+struct LineChartShape<BaseData: Hashable>: Shape {
+    let dataPoints: [DataPoint<BaseData>]
     var closePath: Bool = true
 
     func path(in rect: CGRect) -> Path {
@@ -34,7 +34,7 @@ struct LineChartShape: Shape {
 #if DEBUG
 struct LineChartShape_Previews: PreviewProvider {
     static var previews: some View {
-        LineChartShape(dataPoints: DataPoint.mock, closePath: true)
+        LineChartShape<Int>(dataPoints: DataPoint.mock, closePath: true)
     }
 }
 #endif

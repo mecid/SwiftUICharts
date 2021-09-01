@@ -58,7 +58,10 @@ extension Legend: Hashable {
 }
 
 /// The type that describes a data point in the chart.
-public struct DataPoint {
+public struct DataPoint<BaseData>: Identifiable {
+  public let id: UUID = UUID()
+  
+  
   /// Starting point of a bar (used only in the ``BarChartView``)
   public let startValue: Double
   
@@ -71,48 +74,71 @@ public struct DataPoint {
   /// ``Legend`` value representing the data point
   public let legend: Legend
   
-  /// Swift.Bool value controlling the visibility of the data point in the chart
+  /// Boolean value controlling the visibility of the data point in the chart
   public let visible: Bool
   
-  /**
-   Creates new data point with the following parameters.
-   
-   - Parameters:
-   - value: Double that represents a value of the point in the chart.
-   - label: LocalizedStringKey that describes the point.
-   - legend: The legend of data point, usually appears below the chart.
-   - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
-   */
-  public init(value: Double, label: LocalizedStringKey, legend: Legend, visible: Bool = true) {
+  /// The data this point is based upon. Can be queried when returned via the
+  /// delegate’s ``barChart(didSelectBar)`` method.
+  public var dataObject: BaseData?
+  
+  
+  /// Creates new data point with the following parameters.
+  /// - Parameters:
+  ///   - value: Double that represents a value of the point in the chart.
+  ///   - label: LocalizedStringKey that describes the point.
+  ///   - legend: The legend of data point, usually appears below the chart.
+  ///   - visible: The boolean that controls the visibility of the data point
+  ///              in the chart. Default value is true.
+  ///   - dataObject: The data this point is based upon. Can be queried when
+  ///                 returned via the delegate’s ``barChart(didSelectBar)``
+  ///                 method.
+  public init(value: Double,
+              label: LocalizedStringKey,
+              legend: Legend,
+              visible: Bool = true,
+              dataObject: BaseData? = nil) {
     self.startValue = 0
     self.endValue = value
     self.label = label
     self.legend = legend
     self.visible = visible
+    self.dataObject = dataObject
   }
   
-  /**
-   Creates new data point with the following parameters.
-   
-   - Parameters:
-   - startValue: Double that represents a start value of the point in the chart.
-   - endValue: Double that represents an end value of the point in the chart.
-   - label: LocalizedStringKey that describes the point.
-   - legend: The legend of data point, usually appears below the chart.
-   - visible: The boolean that controls the visibility of the data point in the chart. Default value is true.
-   */
-  public init(
-    startValue: Double,
-    endValue: Double,
-    label: LocalizedStringKey,
-    legend: Legend,
-    visible: Bool = true
-  ) {
+  
+  /// Creates new data point with the following parameters.
+  /// - Parameters:
+  ///   - startValue: Double that represents a start value of the point in
+  ///                 the chart.
+  ///   - endValue: Double that represents an end value of the point in
+  ///               the chart.
+  ///   - label: LocalizedStringKey that describes the point.
+  ///   - legend: The legend of data point, usually appears below the chart.
+  ///   - visible: The boolean that controls the visibility of the data point
+  ///              in the chart. Default value is true.
+  ///   - dataObject: The data this point is based upon. Can be queried when
+  ///                 returned via the delegate’s ``barChart(didSelectBar)``
+  ///                 method.
+  public init(startValue: Double,
+              endValue: Double,
+              label: LocalizedStringKey,
+              legend: Legend,
+              visible: Bool = true,
+              dataObject: BaseData? = nil) {
     self.startValue = startValue
     self.endValue = endValue
     self.label = label
     self.legend = legend
     self.visible = visible
+    self.dataObject = dataObject
+  }
+  
+}
+
+extension DataPoint: Equatable {
+  
+  public static func == (lhs: DataPoint<BaseData>, rhs: DataPoint<BaseData>) -> Bool {
+    lhs.id == rhs.id
   }
   
 }

@@ -9,8 +9,8 @@
 //
 import SwiftUI
 
-struct AxisView: View {
-  let dataPoints: [DataPoint]
+struct AxisView<BaseData: Hashable>: View {
+  let dataPoints: [DataPoint<BaseData>]
   let gridLines: Int
   let showLabels: Bool
   let labelsHeight: CGFloat
@@ -51,11 +51,11 @@ struct AxisView_Previews: PreviewProvider {
   static var previews: some View {
     HStack {
       ChartGridView(gridLines: 5, showLabels: true, labelsHeight: 22)
-      AxisView(dataPoints: DataPoint.mock,
-               gridLines: 5,
-               showLabels: true,
-               labelsHeight: 22,
-               toNearest: 3)
+      AxisView<Int>(dataPoints: DataPoint.mock,
+                    gridLines: 5,
+                    showLabels: true,
+                    labelsHeight: 22,
+                    toNearest: 3)
         .padding(.leading)
     }
     .padding()

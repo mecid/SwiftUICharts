@@ -8,8 +8,8 @@
 import SwiftUI
 
 /// SwiftUI view that draws bars by placing them into a vertical container.
-public struct HorizontalBarChartView: View {
-    let dataPoints: [DataPoint]
+public struct HorizontalBarChartView<BaseData: Hashable>: View {
+    let dataPoints: [DataPoint<BaseData>]
     let barMaxWidth: CGFloat
 
     /**
@@ -19,7 +19,7 @@ public struct HorizontalBarChartView: View {
         - dataPoints: The array of data points that will be used to draw the bar chart.
         - barMaxWidth: The maximal width for the bar that presents the biggest value. Default is 100.
      */
-    public init(dataPoints: [DataPoint], barMaxWidth: CGFloat = 100) {
+    public init(dataPoints: [DataPoint<BaseData>], barMaxWidth: CGFloat = 100) {
         self.dataPoints = dataPoints
         self.barMaxWidth = barMaxWidth
     }
@@ -79,14 +79,14 @@ struct HorizontalBarChart_Previews: PreviewProvider {
         let highResting = Legend(color: .orange, label: "High Resting")
         let elevated = Legend(color: .red, label: "Elevated")
 
-        let dataPoints: [DataPoint] = [
-            DataPoint(value: 0.1, label: "10%", legend: veryLow),
-            DataPoint(value: 0.15, label: "15%", legend: low),
-            DataPoint(value: 0.60, label: "60%", legend: resting),
-            DataPoint(value: 0.1, label: "10%", legend: highResting),
-            DataPoint(value: 0.05, label: "5%", legend: elevated)
+        let dataPoints: [DataPoint<Int>] = [
+            DataPoint<Int>(value: 0.1, label: "10%", legend: veryLow),
+            DataPoint<Int>(value: 0.15, label: "15%", legend: low),
+            DataPoint<Int>(value: 0.60, label: "60%", legend: resting),
+            DataPoint<Int>(value: 0.1, label: "10%", legend: highResting),
+            DataPoint<Int>(value: 0.05, label: "5%", legend: elevated)
         ]
 
-        return HorizontalBarChartView(dataPoints: dataPoints)
+        return HorizontalBarChartView<Int>(dataPoints: dataPoints)
     }
 }

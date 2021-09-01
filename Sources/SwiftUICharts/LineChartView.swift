@@ -61,9 +61,9 @@ public struct LineChartStyle: ChartStyle {
 }
 
 /// SwiftUI view that draws data points by drawing a line.
-public struct LineChartView: View {
+public struct LineChartView<BaseData: Hashable>: View {
   @Environment(\.chartStyle) var chartStyle
-  let dataPoints: [DataPoint]
+  let dataPoints: [DataPoint<BaseData>]
   
   /**
    Creates new line chart view with the following parameters.
@@ -71,7 +71,7 @@ public struct LineChartView: View {
    - Parameters:
    - dataPoints: The array of data points that will be used to draw the bar chart.
    */
-  public init(dataPoints: [DataPoint]) {
+  public init(dataPoints: [DataPoint<BaseData>]) {
     self.dataPoints = dataPoints
   }
   
@@ -131,8 +131,8 @@ public struct LineChartView: View {
 struct LineChartView_Previews: PreviewProvider {
   static var previews: some View {
     HStack {
-      LineChartView(dataPoints: DataPoint.mock)
-      LineChartView(dataPoints: DataPoint.mock)
+      LineChartView<Int>(dataPoints: DataPoint.mock)
+      LineChartView<Int>(dataPoints: DataPoint.mock)
     }.chartStyle(LineChartStyle(showLabels: false))
   }
 }

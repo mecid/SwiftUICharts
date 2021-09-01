@@ -11,11 +11,12 @@ import SwiftUI
 
 
 /// SwiftUI view that draws bars by placing them into a horizontal container.
-public struct BarChartView: View {
+public struct BarChartView<Delegate: BarChartDelegate>: View {
   @Environment(\.chartStyle) var chartStyle
   
-  let dataPoints: [DataPoint]
-  let limit: DataPoint?
+  let dataPoints: [DataPoint<Delegate.BaseData>]
+  let limit: DataPoint<Delegate.BaseData>?
+  let delegate: Delegate?
   
   
   /// Creates new bar chart view with the following parameters.
@@ -24,9 +25,12 @@ public struct BarChartView: View {
   ///                 the bar chart.
   ///   - limit: The horizontal line that will be drawn over bars.
   ///            Default is nil.
-  public init(dataPoints: [DataPoint], limit: DataPoint? = nil) {
+  public init(dataPoints: [DataPoint<Delegate.BaseData>],
+              limit: DataPoint<Delegate.BaseData>? = nil,
+              delegate: Delegate? = nil) {
     self.dataPoints = dataPoints
     self.limit = limit
+    self.delegate = delegate
   }
   
   private var style: BarChartStyle {
@@ -45,7 +49,8 @@ public struct BarChartView: View {
         HStack(spacing: 0) {
           BarsView(dataPoints: dataPoints,
                    limit: limit,
-                   style: style)
+                   style: style,
+                   delegate: delegate)
             .frame(minHeight: style.barMinHeight)
             .background(grid)
           
@@ -76,7 +81,7 @@ public struct BarChartView: View {
 struct BarChartView_Previews : PreviewProvider {
   static let limit = Legend(color: .purple, label: "Trend")
   
-  static let limitBar = DataPoint(value: 52, label: "Trend", legend: limit)
+  static let limitBar = DataPoint<Int>(value: 52, label: "Trend", legend: limit)
   
   static let gridStyle = GridStyle(showLabels: false,
                                    everyNthLabel: nil,
@@ -107,7 +112,7 @@ struct BarChartView_Previews : PreviewProvider {
     Form {
       Section(header: Text("charts")) {
         HStack(spacing: 0) {
-          BarChartView(dataPoints: DataPoint.mockFewData, limit: limitBar)
+          BarChartView<DefaultBarChartDelegate>(dataPoints: DataPoint.mockFewData, limit: limitBar)
 //          BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
         }
         .chartStyle(style)
@@ -116,7 +121,7 @@ struct BarChartView_Previews : PreviewProvider {
       Section(header: Text("charts")) {
         HStack(spacing: 0) {
 //          BarChartView(dataPoints: DataPoint.mockFewData, limit: limitBar)
-          BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
+          BarChartView<DefaultBarChartDelegate>(dataPoints: DataPoint.mock, limit: limitBar)
         }
         .chartStyle(style2)
       }

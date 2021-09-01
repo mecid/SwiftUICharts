@@ -9,10 +9,11 @@
 //
 import SwiftUI
 
-struct BarsView: View {
-  let dataPoints: [DataPoint]
-  let limit: DataPoint?
+struct BarsView<Delegate: BarChartDelegate>: View {
+  let dataPoints: [DataPoint<Delegate.BaseData>]
+  let limit: DataPoint<Delegate.BaseData>?
   let style: BarChartStyle
+  let delegate: Delegate?
   
   
   var body: some View {
@@ -82,7 +83,7 @@ struct BarsView: View {
     round(max + max * 0.15, toNearest: 5)
   }
   
-  private func barView(for point: DataPoint,
+  private func barView(for point: DataPoint<Delegate.BaseData>,
                        index: Int,
                        in geometry: GeometryProxy) -> some View {
     let topCut = style.gridStyle.showLabels ? style.gridStyle.labelHeight : 0
@@ -106,13 +107,16 @@ struct BarsView: View {
         .frame(height: CGFloat((point.endValue-point.startValue) / max) * (geometry.size.height - topCut - offsetToMax))
         .frame(maxWidth: style.barMaxWidth)
     }
+    .onTapGesture {
+      delegate?.barChart(didSelectBar: point)
+    }
   }
   
   private var offsetToMax: CGFloat {
     maxAxisLabelValue - max
   }
   
-  private func limitView(for limit: DataPoint,
+  private func limitView(for limit: DataPoint<Delegate.BaseData>,
                          in geometry: GeometryProxy) -> some View {
     let lineHeight = CGFloat(2)
     let y = -CGFloat(limit.endValue / self.maxAxisLabelValue) * (geometry.size.height - lineHeight/2)
@@ -167,13 +171,15 @@ struct BarsView_Previews: PreviewProvider {
                                     gridStyle: gridStyle2)
   
   static var previews: some View {
-    BarsView(dataPoints: DataPoint.mockFewData,
-             limit: DataPoint.mockLimit,
-             style: style)
+    BarsView<DefaultBarChartDelegate>(dataPoints: DataPoint.mockFewData,
+                  limit: DataPoint.mockLimit,
+                  style: style,
+                  delegate: nil)
     
-    BarsView(dataPoints: DataPoint.mock,
-             limit: nil,
-             style: style2)
+    BarsView<DefaultBarChartDelegate>(dataPoints: DataPoint.mock,
+                  limit: nil,
+                  style: style2,
+                  delegate: nil)
   }
 }
 #endif
