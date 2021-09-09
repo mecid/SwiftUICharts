@@ -9,58 +9,10 @@
 //
 import SwiftUI
 
-/// The type that describes the group of data points in the chart.
-public struct Legend: Identifiable {
-  public let id = UUID()
-  
-  /// Color representing the legend
-  let color: Color
-  
-  /// Foreground color to be used for the legend
-  let foregroundColor: Color
-  
-  /// Localized string key representing the legend
-  let label: LocalizedStringKey
-  
-  /// Integer representing the value to sort the array of legends
-  let order: Int
-  
-  /**
-   Creates new legend with the following parameters.
-   
-   - Parameters:
-   - color: The color of the group that will be used to draw data points.
-   - foregroundColor: The foreground color that will be used to draw data points.
-   - label: LocalizedStringKey that describes the legend.
-   - order: The number that will be used to sort chart legends list. Default value is 0.
-   */
-  public init(color: Color,
-              foregroundColor: Color = .primary,
-              label: LocalizedStringKey,
-              order: Int = 0) {
-    self.color = color
-    self.foregroundColor = foregroundColor
-    self.label = label
-    self.order = order
-  }
-}
-
-extension Legend: Comparable {
-  public static func < (lhs: Self, rhs: Self) -> Bool {
-    lhs.order < rhs.order
-  }
-}
-
-extension Legend: Hashable {
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(id)
-  }
-}
 
 /// The type that describes a data point in the chart.
 public struct DataPoint<BaseData>: Identifiable {
-  public let id: UUID = UUID()
-  
+  public let id: UUID = UUID()  
   
   /// Starting point of a bar (used only in the ``BarChartView``)
   public let startValue: Double
@@ -204,7 +156,7 @@ extension DataPoint {
     return [
       .init(value: 45, label: "1", legend: low),
       .init(value: 90, label: "2", legend: warmUp),
-      .init(value: 103, label: "3", legend: fatBurning),
+      .init(value: 103.9, label: "3", legend: fatBurning),
       .init(value: 92, label: "4", legend: buildFitness),
       .init(value: 78, label: "5", legend: highIntensity),
     ]

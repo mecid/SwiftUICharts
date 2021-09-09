@@ -8,13 +8,13 @@
 import Foundation
 
 public protocol BarChartDelegate {
-  associatedtype BaseData: Hashable
+  associatedtype BaseData
   
   func barChart(didSelectBar dataPoint: DataPoint<BaseData>)
 }
 
-struct DefaultBarChartDelegate: BarChartDelegate {
-  typealias BaseData = Int
+public struct DefaultBarChartDelegate: BarChartDelegate {
+  public typealias BaseData = Int
   
-  func barChart(didSelectBar dataPoint: DataPoint<Int>) { }
+  public func barChart(didSelectBar dataPoint: DataPoint<Int>) { }
 }

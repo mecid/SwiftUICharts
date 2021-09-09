@@ -28,5 +28,5 @@ public func floor(_ value: Double, toNearest: Double) -> Double {
 ///   - value: The value to round
 ///   - toNearest: The factor to round to
 public func ceil(_ value: Double, toNearest: Double) -> Double {
-  ceil(value * toNearest) * toNearest
+  ceil(value / toNearest) * toNearest
 }

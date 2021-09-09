@@ -9,7 +9,7 @@
 //
 import SwiftUI
 
-struct LegendView<BaseData: Hashable>: View {
+struct LegendView<BaseData>: View {
   let legends: [Legend]
   
   init(dataPoints: [DataPoint<BaseData>]) {

@@ -38,11 +38,9 @@ struct ChartGridView: View {
     var lineCount: Int
     
     func path(in rect: CGRect) -> Path {
-      let count = lineCount - 1
-      
-      return Path { path in
-        for index in 0 ... count {
-          let y = rect.height / CGFloat(count) * CGFloat(index)
+      Path { path in
+        for index in 0 ... lineCount {
+          let y = rect.height / CGFloat(lineCount) * CGFloat(index)
           
           path.move(to: CGPoint(x: 0, y: y))
           path.addLine(to: CGPoint(x: rect.width, y: y))

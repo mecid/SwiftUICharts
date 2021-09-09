@@ -12,11 +12,12 @@ import SwiftUI
 
 /// SwiftUI view that draws bars by placing them into a horizontal container.
 public struct BarChartView<Delegate: BarChartDelegate>: View {
-  @Environment(\.chartStyle) var chartStyle
+//  @Environment(\.chartStyle) var chartStyle
   
   let dataPoints: [DataPoint<Delegate.BaseData>]
   let limit: DataPoint<Delegate.BaseData>?
   let delegate: Delegate?
+  let style: BarChartStyle
   
   
   /// Creates new bar chart view with the following parameters.
@@ -27,15 +28,17 @@ public struct BarChartView<Delegate: BarChartDelegate>: View {
   ///            Default is nil.
   public init(dataPoints: [DataPoint<Delegate.BaseData>],
               limit: DataPoint<Delegate.BaseData>? = nil,
-              delegate: Delegate? = nil) {
+              delegate: Delegate? = nil,
+              style: BarChartStyle) {
     self.dataPoints = dataPoints
     self.limit = limit
     self.delegate = delegate
+    self.style = style
   }
   
-  private var style: BarChartStyle {
-    (chartStyle as? BarChartStyle) ?? .init()
-  }
+//  private var style: BarChartStyle {
+//    (chartStyle as? BarChartStyle) ?? .init()
+//  }
   
   private var grid: some View {
     ChartGridView(gridLines: style.gridStyle.gridLines,
@@ -45,28 +48,32 @@ public struct BarChartView<Delegate: BarChartDelegate>: View {
   
   public var body: some View {
     VStack(alignment: .leading, spacing: 0) {
-      VStack {
-        HStack(spacing: 0) {
-          BarsView(dataPoints: dataPoints,
-                   limit: limit,
-                   style: style,
-                   delegate: delegate)
+      HStack(spacing: 0) {
+        BarsView(dataPoints: dataPoints,
+                 limit: limit,
+                 style: style,
+                 maxValue: maxValue,
+                 maxLabelValue: stepAndMaxAxisLabelValue.value,
+                 delegate: delegate)
+          .frame(minHeight: style.barMinHeight)
+          .background(grid)
+        
+        if style.gridStyle.showAxis {
+          AxisView(dataPoints: dataPoints,
+                   gridLines: style.gridStyle.gridLines,
+                   roundTo: style.gridStyle.roundToNearest,
+                   showLabels: style.gridStyle.showLabels,
+                   labelsHeight: style.gridStyle.labelHeight,
+                   maxValue: maxValue,
+                   maxLabelValue: stepAndMaxAxisLabelValue.value,
+                   step: stepAndMaxAxisLabelValue.step)
+          //                .fixedSize(horizontal: true, vertical: false)
             .frame(minHeight: style.barMinHeight)
-            .background(grid)
-          
-          if style.gridStyle.showAxis {
-            AxisView(dataPoints: dataPoints,
-                     gridLines: style.gridStyle.gridLines,
-                     showLabels: style.gridStyle.showLabels,
-                     labelsHeight: style.gridStyle.labelHeight,
-                     toNearest: style.gridStyle.roundToNearest)
-              .fixedSize(horizontal: true, vertical: false)
-              .accessibilityHidden(true)
-              .padding(.leading, style.gridStyle.axisLeadingPadding)
-          }
+            .accessibilityHidden(true)
+            .padding(.leading, style.gridStyle.axisLeadingPadding)
         }
-        .padding(.top)
       }
+      .padding(.top)
       
       if style.showLegends {
         LegendView(dataPoints: limit.map { [$0] + dataPoints} ?? dataPoints)
@@ -74,6 +81,29 @@ public struct BarChartView<Delegate: BarChartDelegate>: View {
           .accessibilityHidden(true)
       }
     }
+  }
+  
+  private var maxValue: Double {
+    guard let max = dataPoints.max()?.endValue, max != 0 else {
+      return 1
+    }
+    return max
+  }
+  
+  private var stepAndMaxAxisLabelValue: (step: Double, value: Double) {
+    var percentage = 0.05
+    let nearest = Double(style.gridStyle.roundToNearest)
+    let gridLines = Double(style.gridStyle.gridLines)
+    
+    if maxValue < 50 {
+      percentage = 0.025
+    }
+    
+    let suggested = ceil(maxValue + maxValue * percentage, toNearest: nearest)
+    let step = ceil((suggested / (gridLines - 1)), toNearest: nearest/2)
+    
+    print("##### BarChartView: grid lines: \(gridLines), nearest: \(nearest), max value: \(maxValue), suggested: \(suggested), step: \(step), max axis value: \(step * gridLines)")
+    return (step, step * gridLines)
   }
 }
 
@@ -87,8 +117,8 @@ struct BarChartView_Previews : PreviewProvider {
                                    everyNthLabel: nil,
                                    showAxis: true,
                                    axisLeadingPadding: 5,
-                                   gridLines: 5,
-                                   roundToNearest: 10)
+                                   gridLines: 10,
+                                   roundToNearest: 5)
   
   static let style = BarChartStyle(barMinHeight: 200.0,
                                    showLegends: false,
@@ -108,23 +138,40 @@ struct BarChartView_Previews : PreviewProvider {
                                     gridStyle: gridStyle2)
   
   
+  static var singleDataPoint = DataPoint<Int>(value: 109,
+                                              label: "avg: 109",
+                                              legend: Legend(color: .red,
+                                                             label: "avg"))
+  
+  
   static var previews: some View {
     Form {
-      Section(header: Text("charts")) {
-        HStack(spacing: 0) {
-          BarChartView<DefaultBarChartDelegate>(dataPoints: DataPoint.mockFewData, limit: limitBar)
-//          BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
-        }
-        .chartStyle(style)
+      Section(header: Text("single value")) {
+        BarChartView<DefaultBarChartDelegate>(dataPoints: [singleDataPoint],
+                                              limit: singleDataPoint,
+                                              style: style)
+//          .chartStyle(style)
       }
       
-      Section(header: Text("charts")) {
-        HStack(spacing: 0) {
-//          BarChartView(dataPoints: DataPoint.mockFewData, limit: limitBar)
-          BarChartView<DefaultBarChartDelegate>(dataPoints: DataPoint.mock, limit: limitBar)
-        }
-        .chartStyle(style2)
-      }
+//      Section(header: Text("charts")) {
+//        HStack(spacing: 0) {
+//          BarChartView<DefaultBarChartDelegate>(dataPoints: DataPoint.mockFewData,
+//                                                limit: limitBar,
+//                                                style: style)
+////          BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
+//        }
+////        .chartStyle(style)
+//      }
+//
+//      Section(header: Text("charts")) {
+//        HStack(spacing: 0) {
+////          BarChartView(dataPoints: DataPoint.mockFewData, limit: limitBar)
+//          BarChartView<DefaultBarChartDelegate>(dataPoints: DataPoint.mock,
+//                                                limit: limitBar,
+//                                                style: style2)
+//        }
+////        .chartStyle(style2)
+//      }
     }
   }
 }

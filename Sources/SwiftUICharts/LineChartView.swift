@@ -105,9 +105,12 @@ public struct LineChartView<BaseData: Hashable>: View {
         if style.gridStyle.showAxis {
           AxisView(dataPoints: dataPoints,
                    gridLines: style.gridStyle.gridLines,
+                   roundTo: style.gridStyle.roundToNearest,
                    showLabels: style.showLabels,
                    labelsHeight: style.labelHeight,
-                   toNearest: style.gridStyle.roundToNearest)
+                   maxValue: maxValue,
+                   maxLabelValue: stepAndMaxAxisLabelValue.value,
+                   step: stepAndMaxAxisLabelValue.step)
             .accessibilityHidden(true)
             .padding(.leading, style.gridStyle.axisLeadingPadding)
         }
@@ -124,6 +127,28 @@ public struct LineChartView<BaseData: Hashable>: View {
           .accessibilityHidden(true)
       }
     }
+  }
+  
+  private var maxValue: Double {
+    guard let max = dataPoints.max()?.endValue, max != 0 else {
+      return 1
+    }
+    return max
+  }
+  
+  private var stepAndMaxAxisLabelValue: (step: Double, value: Double) {
+    var percentage = 0.1
+    let nearest = Double(style.gridStyle.roundToNearest)
+    let gridLines = Double(style.gridStyle.gridLines)
+    
+    if maxValue < 50 {
+      percentage = 0.5
+    }
+    
+    let suggested = round(maxValue + maxValue * percentage, toNearest: nearest)
+    let step = ceil((suggested / gridLines - 1), toNearest: nearest)
+    
+    return (step, step * gridLines)
   }
 }
 

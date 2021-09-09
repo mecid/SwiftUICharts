@@ -25,11 +25,11 @@ public struct GridStyle {
   /// Leading padding for the value axis displayed in the chart
   public let axisLeadingPadding: CGFloat
   
-  /// The number of grid lines to be shown (including min and max lines)
+  /// The number of grid lines to be shown (not counting the zero line)
   public let gridLines: Int
   
   /// The value to which the axis labels should be rounded to
-  public let roundToNearest: Int
+  public let roundToNearest: Double
  
   
   /// Creates a new grid style with the following parameters.
@@ -53,7 +53,7 @@ public struct GridStyle {
               showAxis: Bool = true,
               axisLeadingPadding: CGFloat = 0,
               gridLines: Int = 4,
-              roundToNearest: Int = 5) {
+              roundToNearest: Double = 5) {
     self.showLabels = showLabels
     self.everyNthLabel = everyNthLabel
     self.labelHeight = labelHeight
