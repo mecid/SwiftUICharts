@@ -102,7 +102,6 @@ public struct BarChartView<Delegate: BarChartDelegate>: View {
     let suggested = ceil(maxValue + maxValue * percentage, toNearest: nearest)
     let step = ceil((suggested / (gridLines - 1)), toNearest: nearest/2)
     
-    print("##### BarChartView: grid lines: \(gridLines), nearest: \(nearest), max value: \(maxValue), suggested: \(suggested), step: \(step), max axis value: \(step * gridLines)")
     return (step, step * gridLines)
   }
 }

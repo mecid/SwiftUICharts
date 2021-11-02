@@ -112,12 +112,12 @@ struct BarsView<Delegate: BarChartDelegate>: View {
         .frame(maxWidth: style.barMaxWidth)
       
       // TODO Make as option. Take bar width into account for font size.
-      Text(formatter.string(from: NSNumber(value: point.endValue)) ?? "")
-        .font(.system(size: 13))
-        .padding(0)
-        .rotationEffect(Angle(degrees: -90))
-        .offset(y: -20)
-        .frame(maxHeight: style.barMaxWidth)
+//      Text(formatter.string(from: NSNumber(value: point.endValue)) ?? "")
+//        .font(.system(size: 13))
+//        .padding(0)
+//        .rotationEffect(Angle(degrees: -90))
+//        .offset(y: -20)
+//        .frame(maxHeight: style.barMaxWidth)
     }
     .onTapGesture {
       delegate?.barChart(didSelectBar: point)
