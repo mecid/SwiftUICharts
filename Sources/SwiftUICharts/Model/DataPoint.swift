@@ -119,6 +119,12 @@ extension DataPoint: Comparable {
     }
 }
 
+extension DataPoint: Identifiable {
+    public var id: UUID {
+        .init()
+    }
+}
+
 #if DEBUG
 extension DataPoint {
     static var mock: [DataPoint] {
