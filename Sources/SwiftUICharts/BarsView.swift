@@ -13,10 +13,13 @@ struct BarsView: View {
     let showAxis: Bool
 
     private var max: Double {
-        guard let max = dataPoints.max()?.endValue, max != 0 else {
-            return 1
+        var allDataPoints = dataPoints
+
+        if let limit = limit {
+            allDataPoints.append(limit)
         }
-        return max
+
+        return allDataPoints.max()?.endValue ?? 0
     }
 
     var body: some View {
@@ -26,7 +29,8 @@ struct BarsView: View {
                     ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
                         barView(for: bar, in: geometry)
                     }
-                }.frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
+                }
+                .frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)
 
                 limit.map { limit in
                     limitView(for: limit, in: geometry)
@@ -54,7 +58,8 @@ struct BarsView: View {
                 .foregroundColor(.white)
                 .background(limit.legend.color)
                 .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-        }.offset(y: CGFloat(limit.endValue / self.max) * geometry.size.height / -2)
+        }
+        .offset(y: -CGFloat(limit.endValue / self.max) * geometry.size.height)
     }
 }
 
