@@ -34,7 +34,8 @@ struct BarsView: View {
             allDataPoints.append(limit)
         }
 
-        return allDataPoints.max()?.endValue ?? 0
+        return allDataPoints.max()
+            .map { $0.endValue == 0 ? 1: $0.endValue } ?? 1
     }
 
     var body: some View {
