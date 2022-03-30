@@ -11,7 +11,7 @@ struct LegendView: View {
     let legends: [Legend]
 
     init(dataPoints: [DataPoint]) {
-        legends = Array(Set(dataPoints.map { $0.legend })).sorted()
+        legends = Array(Set(dataPoints.filter(\.visible).map { $0.legend })).sorted()
     }
 
     var body: some View {
