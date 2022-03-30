@@ -21,7 +21,7 @@ struct BarsView: View {
         }
     }
 
-    private var max: Double {
+    private var max: CGFloat {
         var allDataPoints = dataPoints
 
         if let limit = limit {
@@ -53,8 +53,8 @@ struct BarsView: View {
             .fill(point.legend.color)
             .accessibilityLabel(Text(point.label))
             .accessibilityValue(Text(point.legend.label))
-            .offset(y: -CGFloat(point.startValue / max) * geometry.size.height)
-            .frame(height: CGFloat((point.endValue-point.startValue) / max) * geometry.size.height)
+            .offset(y: -point.startValue / max * geometry.size.height)
+            .frame(height: (point.endValue-point.startValue) / max * geometry.size.height)
     }
 
     private func limitView(for limit: DataPoint, in geometry: GeometryProxy) -> some View {
@@ -68,7 +68,9 @@ struct BarsView: View {
                 .background(limit.legend.color)
                 .clipShape(RoundedRectangle(cornerRadius: Size.cornerRadius, style: .continuous))
         }
-        .offset(y: -CGFloat((limit.endValue-Size.limitHeight/2) / self.max) * geometry.size.height)
+        .position(
+            x: geometry.size.width / 2,
+            y: geometry.size.height - (limit.endValue / max * geometry.size.height))
     }
 }
 
