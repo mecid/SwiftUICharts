@@ -64,7 +64,19 @@ public struct BarChartView: View {
         - limit: The horizontal line that will be drawn over bars. Default is nil.
      */
     public init(dataPoints: [DataPoint], limit: DataPoint? = nil) {
-        self.dataPoints = dataPoints
+        // insert additional invisible data point to guarantee spacing
+        self.dataPoints = dataPoints + [
+            .init(
+                value: (dataPoints.max()?.endValue ?? 0) * 1.2,
+                label: "invisible",
+                legend: .init(
+                    color: .clear,
+                    label: "clear"
+                ),
+                visible: false
+            )
+        ]
+
         self.limit = limit
     }
 

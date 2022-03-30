@@ -12,12 +12,18 @@ struct BarsView: View {
     let limit: DataPoint?
     let showAxis: Bool
 
+    @Environment(\.sizeCategory) private var sizeCategory
+
     private enum Size {
         static let cornerRadius: CGFloat = 4
         static let limitHeight: CGFloat = 4
 
         static func spacing(for count: Int) -> CGFloat {
             return count > 40 ? 0 : 2
+        }
+
+        static func limitMin(for sizeCategory: ContentSizeCategory) -> CGFloat {
+            return sizeCategory.isAccessibilityCategory ? 0.4 : 0.2
         }
     }
 
@@ -70,7 +76,11 @@ struct BarsView: View {
         }
         .position(
             x: geometry.size.width / 2,
-            y: geometry.size.height - (limit.endValue / max * geometry.size.height))
+            y: geometry.size.height - Swift.max(
+                (limit.endValue / max * geometry.size.height),
+                geometry.size.height * Size.limitMin(for: sizeCategory)
+            )
+        )
     }
 }
 
