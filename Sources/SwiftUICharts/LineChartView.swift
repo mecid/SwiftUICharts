@@ -11,9 +11,11 @@ import SwiftUI
 public struct LineChartStyle: ChartStyle {
     /// Minimal height for a line chart view
     public let lineMinHeight: CGFloat
+    /// Boolean value indicating whenever show chart axis
     public let showAxis: Bool
     /// Leading padding for the value axis displayed in the chart
     public let axisLeadingPadding: CGFloat
+    /// Boolean value indicating whenever show chart labels
     public let showLabels: Bool
     /// The count of labels that should be shown below the chart. Nil value shows all the labels.
     public let labelCount: Int?

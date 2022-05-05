@@ -11,15 +11,14 @@ import SwiftUI
 public struct BarChartStyle: ChartStyle {
     /// Minimal height for a bar chart view
     public let barMinHeight: CGFloat
-
+    /// Boolean value indicating whenever show chart axis
     public let showAxis: Bool
     /// Leading padding for the value axis displayed in the chart
     public let axisLeadingPadding: CGFloat
-
+    /// Boolean value indicating whenever show chart labels
     public let showLabels: Bool
     /// The count of labels that should be shown below the chart. Nil value shows all the labels.
     public let labelCount: Int?
-
     public let showLegends: Bool
     /**
      Creates new bar chart style with the following parameters.
