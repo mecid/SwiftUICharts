@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  ChartStyle.swift
+//  SwiftUICharts
 //
 //  Created by Majid Jabrayilov on 08.12.20.
 //
@@ -8,12 +8,6 @@ import SwiftUI
 
 /// Protocol type that defines general chart styling options
 public protocol ChartStyle {
-    /// Boolean value indicating whenever show chart labels
-    var showLabels: Bool { get }
-
-    /// Boolean value indicating whenever show chart axis
-    var showAxis: Bool { get }
-
     /// Boolean value indicating whenever show chart legends
     var showLegends: Bool { get }
 }
