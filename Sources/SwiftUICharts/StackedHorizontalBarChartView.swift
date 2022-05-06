@@ -69,9 +69,11 @@ public struct StackedHorizontalBarChartView: View {
                 .clipShape(RoundedRectangle(cornerRadius: style.cornerRadius, style: .continuous))
             }
 
-            LegendView(dataPoints: dataPoints)
-                .padding(.top)
-                .accessibility(hidden: true)
+            if style.showLegends {
+                LegendView(dataPoints: dataPoints)
+                    .padding(.top)
+                    .accessibility(hidden: true)
+            }
         }
     }
 
