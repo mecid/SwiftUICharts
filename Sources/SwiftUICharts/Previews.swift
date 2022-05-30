@@ -95,7 +95,21 @@ struct Previews: PreviewProvider {
                     axisLeadingPadding: 0,
                     showLabels: true,
                     labelCount: 10,
-                    showLegends: true
+                    showLegends: true,
+                    drawing: .fill
+                )
+            )
+        
+        LineChartView(dataPoints: DataPoint.mock)
+            .chartStyle(
+                LineChartStyle(
+                    lineMinHeight: 100,
+                    showAxis: true,
+                    axisLeadingPadding: 0,
+                    showLabels: true,
+                    labelCount: 10,
+                    showLegends: true,
+                    drawing: .stroke(width: 4)
                 )
             )
         

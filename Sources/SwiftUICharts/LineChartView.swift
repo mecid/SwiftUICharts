@@ -9,17 +9,26 @@ import SwiftUI
 
 /// Type that defines a line chart style.
 public struct LineChartStyle: ChartStyle {
-    /// Minimal height for a line chart view
+    /// Type that defines the style of line drawing.
+    public enum Drawing {
+        case fill
+        case stroke(width: CGFloat = 1)
+    }
+    
+    /// Minimal height for a line chart view.
     public let lineMinHeight: CGFloat
-    /// Boolean value indicating whenever show chart axis
+    /// Boolean value indicating whenever show chart axis.
     public let showAxis: Bool
-    /// Leading padding for the value axis displayed in the chart
+    /// Leading padding for the value axis displayed in the chart.
     public let axisLeadingPadding: CGFloat
-    /// Boolean value indicating whenever show chart labels
+    /// Boolean value indicating whenever show chart labels.
     public let showLabels: Bool
     /// The count of labels that should be shown below the chart. Nil value shows all the labels.
     public let labelCount: Int?
     public let showLegends: Bool
+    
+    /// Value that controls type of drawing.
+    public let drawing: Drawing
 
     /**
      Creates new line chart style with the following parameters.
@@ -31,6 +40,7 @@ public struct LineChartStyle: ChartStyle {
         - showLabels: Bool value that controls whenever to show labels.
         - labelCount: The count of labels that should be shown below the the chart. Default is all.
         - showLegends: Bool value that controls whenever to show legends.
+        - drawing: Value that controls type of drawing. Default is fill.
      */
 
     public init(
@@ -39,7 +49,8 @@ public struct LineChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        drawing: Drawing = .fill
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -47,6 +58,7 @@ public struct LineChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.drawing = drawing
     }
 }
 
@@ -96,10 +108,17 @@ public struct LineChartView: View {
     public var body: some View {
         VStack {
             HStack(spacing: 0) {
-                LineChartShape(dataPoints: dataPoints)
-                    .fill(gradient)
-                    .frame(minHeight: style.lineMinHeight)
-                    .background(grid)
+                if case let LineChartStyle.Drawing.stroke(width) = style.drawing {
+                    LineChartShape(dataPoints: dataPoints, closePath: false)
+                        .stroke(gradient, style: .init(lineWidth: width))
+                        .frame(minHeight: style.lineMinHeight)
+                        .background(grid)
+                } else {
+                    LineChartShape(dataPoints: dataPoints, closePath: true)
+                        .fill(gradient)
+                        .frame(minHeight: style.lineMinHeight)
+                        .background(grid)
+                }
 
                 if style.showAxis {
                     AxisView(dataPoints: dataPoints)
