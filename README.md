@@ -4,6 +4,8 @@ A simple line and bar charting library that support accessibility written using 
 
 ## Usage
 
+You can find all the examples [here](https://github.com/mecid/SwiftUICharts/blob/main/Sources/SwiftUICharts/Previews.swift).
+
 ### Vertical bar chart
 ```swift
 let highIntensity = Legend(color: .orange, label: "High Intensity", order: 5)
