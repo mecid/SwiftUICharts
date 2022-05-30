@@ -1,6 +1,6 @@
 //
 //  DataPoint.swift
-//  CardioBot
+//  SwiftUICharts
 //
 //  Created by Majid Jabrayilov on 5/13/20.
 //  Copyright © 2020 Majid Jabrayilov. All rights reserved.

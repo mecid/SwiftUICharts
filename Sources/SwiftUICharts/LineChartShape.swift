@@ -1,6 +1,6 @@
 //
-//  SwiftUIView.swift
-//  
+//  LineChartShape.swift
+//  SwiftUICharts
 //
 //  Created by Majid Jabrayilov on 24.09.20.
 //

@@ -1,6 +1,6 @@
 //
 //  BarChartView.swift
-//  SleepBot
+//  SwiftUICharts
 //
 //  Created by Majid Jabrayilov on 6/21/19.
 //  Copyright © 2019 Majid Jabrayilov. All rights reserved.

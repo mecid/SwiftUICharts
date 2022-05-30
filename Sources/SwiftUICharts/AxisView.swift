@@ -1,6 +1,6 @@
 //
 //  AxisView.swift
-//  CardioBot
+//  SwiftUICharts
 //
 //  Created by Majid Jabrayilov on 6/27/20.
 //  Copyright © 2020 Majid Jabrayilov. All rights reserved.
