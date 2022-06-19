@@ -56,18 +56,6 @@ struct Previews: PreviewProvider {
                     showLegends: true
                 )
             )
-
-        LineChartView(dataPoints: DataPoint.mock)
-            .chartStyle(
-                LineChartStyle(
-                    lineMinHeight: 100,
-                    showAxis: true,
-                    axisLeadingPadding: 0,
-                    showLabels: true,
-                    labelCount: 10,
-                    showLegends: true
-                )
-            )
         
         StackedHorizontalBarChartView(
             dataPoints: Array(DataPoint.mock[0...7])
