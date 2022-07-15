@@ -10,13 +10,13 @@ import SwiftUI
 /// The type that describes the group of data points in the chart.
 public struct Legend {
     /// Color representing the legend
-    let color: Color
+	public let color: Color
 
     /// Localized string key representing the legend
-    let label: LocalizedStringKey
+	public let label: LocalizedStringKey
 
     /// Integer representing the value to sort the array of legends
-    let order: Int
+	public let order: Int
 
     /**
      Creates new legend with the following parameters.
@@ -43,6 +43,10 @@ extension Legend: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(color)
     }
+	
+	public static func ==(lhs: Legend, rhs: Legend) -> Bool {
+		return lhs.color == rhs.color
+	}
 }
 
 /// The type that describes a data point in the chart.
@@ -102,7 +106,6 @@ public struct DataPoint {
         self.legend = legend
         self.visible = visible
     }
-
 }
 
 extension DataPoint: Hashable {
@@ -111,6 +114,12 @@ extension DataPoint: Hashable {
         hasher.combine(startValue)
         hasher.combine(endValue)
     }
+	
+	public static func ==(lhs: DataPoint, rhs: DataPoint) -> Bool {
+		return lhs.legend == rhs.legend &&
+			lhs.startValue == rhs.startValue &&
+			lhs.endValue == rhs.endValue
+	}
 }
 
 extension DataPoint: Comparable {
