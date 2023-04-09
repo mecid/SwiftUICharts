@@ -18,7 +18,7 @@ struct LabelsView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(dataPoints.filter(\.visible).indexed(), id: \.1.self) { index, bar in
+            ForEach(dataPoints.filter(\.visible).indexed(), id: \.1.id) { index, bar in
                 if index % self.threshold == 0 {
                     Text(bar.label)
                         .multilineTextAlignment(.center)

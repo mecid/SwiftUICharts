@@ -58,7 +58,7 @@ public struct StackedHorizontalBarChartView: View {
         VStack {
             GeometryReader { geometry in
                 HStack(spacing: style.spacing) {
-                    ForEach(dataPoints, id: \.self) { dataPoint in
+                    ForEach(dataPoints) { dataPoint in
                         Rectangle()
                             .fill(dataPoint.legend.color)
                             .frame(width: dataPoint.endValue / sum * geometry.size.width)

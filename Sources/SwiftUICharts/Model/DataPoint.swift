@@ -46,7 +46,9 @@ extension Legend: Hashable {
 }
 
 /// The type that describes a data point in the chart.
-public struct DataPoint {
+public struct DataPoint: Identifiable {
+    /// Random unique identifier
+    public let id = UUID()
     /// Starting point of a bar (used only in the ``BarChartView``)
     public let startValue: Double
 
@@ -103,14 +105,6 @@ public struct DataPoint {
         self.visible = visible
     }
 
-}
-
-extension DataPoint: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(legend)
-        hasher.combine(startValue)
-        hasher.combine(endValue)
-    }
 }
 
 extension DataPoint: Comparable {

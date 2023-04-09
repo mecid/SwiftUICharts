@@ -42,7 +42,7 @@ struct BarsView: View {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
                 HStack(alignment: .bottom, spacing: Size.spacing(for: dataPoints.count)) {
-                    ForEach(dataPoints.filter(\.visible), id: \.self) { bar in
+                    ForEach(dataPoints.filter(\.visible)) { bar in
                         barView(for: bar, in: geometry)
                     }
                 }
