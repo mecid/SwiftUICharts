@@ -42,7 +42,25 @@ public struct LineChartStyle: ChartStyle {
         - showLegends: Bool value that controls whenever to show legends.
         - drawing: Value that controls type of drawing. Default is fill.
      */
-
+    #if os(watchOS)
+    public init(
+        lineMinHeight: CGFloat = 50,
+        showAxis: Bool = true,
+        axisLeadingPadding: CGFloat = 0,
+        showLabels: Bool = true,
+        labelCount: Int? = nil,
+        showLegends: Bool = true,
+        drawing: Drawing = .fill
+    ) {
+        self.lineMinHeight = lineMinHeight
+        self.showAxis = showAxis
+        self.axisLeadingPadding = axisLeadingPadding
+        self.showLabels = showLabels
+        self.labelCount = labelCount
+        self.showLegends = showLegends
+        self.drawing = drawing
+    }
+    #else
     public init(
         lineMinHeight: CGFloat = 100,
         showAxis: Bool = true,
@@ -60,6 +78,7 @@ public struct LineChartStyle: ChartStyle {
         self.showLegends = showLegends
         self.drawing = drawing
     }
+    #endif
 }
 
 /// SwiftUI view that draws data points by drawing a line.

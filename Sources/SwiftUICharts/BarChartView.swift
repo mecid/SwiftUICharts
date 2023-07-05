@@ -31,6 +31,23 @@ public struct BarChartStyle: ChartStyle {
         - labelCount: The count of labels that should be shown below the chart. Default is all.
         - showLegends: Bool value that controls whenever to show legends.
      */
+    #if os(watchOS)
+    public init(
+        barMinHeight: CGFloat = 50,
+        showAxis: Bool = true,
+        axisLeadingPadding: CGFloat = 0,
+        showLabels: Bool = true,
+        labelCount: Int? = nil,
+        showLegends: Bool = true
+    ) {
+        self.barMinHeight = barMinHeight
+        self.showAxis = showAxis
+        self.axisLeadingPadding = axisLeadingPadding
+        self.showLabels = showLabels
+        self.labelCount = labelCount
+        self.showLegends = showLegends
+    }
+    #else
     public init(
         barMinHeight: CGFloat = 100,
         showAxis: Bool = true,
@@ -46,6 +63,7 @@ public struct BarChartStyle: ChartStyle {
         self.labelCount = labelCount
         self.showLegends = showLegends
     }
+    #endif
 }
 
 /// SwiftUI view that draws bars by placing them into a horizontal container.
