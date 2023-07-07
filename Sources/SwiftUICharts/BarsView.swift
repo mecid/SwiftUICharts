@@ -11,6 +11,8 @@ struct BarsView: View {
     let dataPoints: [DataPoint]
     let limit: DataPoint?
     let showAxis: Bool
+    
+    @Environment(\.chartDataPointSelector) private var selector
 
     @Environment(\.sizeCategory) private var sizeCategory
 
@@ -44,6 +46,9 @@ struct BarsView: View {
                 HStack(alignment: .bottom, spacing: Size.spacing(for: dataPoints.count)) {
                     ForEach(dataPoints.filter(\.visible)) { bar in
                         barView(for: bar, in: geometry)
+                            .onTapGesture {
+                                selector?(bar)
+                            }
                     }
                 }
                 .frame(minHeight: 0, maxHeight: .infinity, alignment: .bottomLeading)

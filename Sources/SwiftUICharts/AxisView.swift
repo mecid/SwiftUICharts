@@ -13,19 +13,29 @@ struct AxisView: View {
     var body: some View {
         VStack {
             dataPoints.max().map {
-                Text(String(Int($0.endValue)))
+                Text(string(from: $0.endValue))
                     .foregroundColor(.accentColor)
                     .font(.caption)
             }
             Spacer()
             dataPoints.max().map {
-                Text(String(Int($0.endValue / 2)))
+                Text(string(from: $0.endValue / 2))
                     .foregroundColor(.accentColor)
                     .font(.caption)
             }
             Spacer()
         }
     }
+    
+    private func string(from value: Double) -> String {
+        guard let formatter = valueFormatter else {
+            return String(Int(value))
+        }
+        
+        return formatter(value)
+    }
+    
+    @Environment(\.axisValueFormatter) private var valueFormatter
 }
 
 #if DEBUG
