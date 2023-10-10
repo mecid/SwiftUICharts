@@ -11,8 +11,12 @@ struct AxisView: View {
     let dataPoints: [DataPoint]
     let maxY: Double?
     
-    private var displayedMax: Double {
-        maxY ?? dataPoints.max()?.endValue ?? 0.0
+    private var displayedMax: Double? {
+        var vals = dataPoints.map({$0.endValue})
+        if let maxY {
+            vals.append(maxY)
+        }
+        return vals.max()
     }
     
     init(dataPoints: [DataPoint], maxY: Double? = nil) {
@@ -22,13 +26,15 @@ struct AxisView: View {
 
     var body: some View {
         VStack {
-            Text(String(Int(displayedMax)))
-                .foregroundColor(.accentColor)
-                .font(.caption)
-            Spacer()
-            Text(String(Int(displayedMax / 2)))
-                .foregroundColor(.accentColor)
-                .font(.caption)
+            if let displayedMax {
+                Text(String(Int(displayedMax)))
+                    .foregroundColor(.accentColor)
+                    .font(.caption)
+                Spacer()
+                Text(String(Int(displayedMax / 2)))
+                    .foregroundColor(.accentColor)
+                    .font(.caption)
+            }
             Spacer()
         }
     }
@@ -38,6 +44,8 @@ struct AxisView: View {
 struct AxisView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+            AxisView(dataPoints: [])
+            
             AxisView(dataPoints: DataPoint.mock)
             
             AxisView(dataPoints: DataPoint.mock, maxY: 170.0)
