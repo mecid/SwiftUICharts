@@ -29,6 +29,9 @@ public struct LineChartStyle: ChartStyle {
     
     /// Value that controls type of drawing.
     public let drawing: Drawing
+    
+    /// The max value displayed on the y-axis
+    public let maxY: Double?
 
     /**
      Creates new line chart style with the following parameters.
@@ -50,7 +53,8 @@ public struct LineChartStyle: ChartStyle {
         showLabels: Bool = true,
         labelCount: Int? = nil,
         showLegends: Bool = true,
-        drawing: Drawing = .fill
+        drawing: Drawing = .fill,
+        maxY: Double? = nil
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -59,6 +63,7 @@ public struct LineChartStyle: ChartStyle {
         self.labelCount = labelCount
         self.showLegends = showLegends
         self.drawing = drawing
+        self.maxY = maxY
     }
     #else
     public init(
@@ -68,7 +73,8 @@ public struct LineChartStyle: ChartStyle {
         showLabels: Bool = true,
         labelCount: Int? = nil,
         showLegends: Bool = true,
-        drawing: Drawing = .fill
+        drawing: Drawing = .fill,
+        maxY: Double? = nil
     ) {
         self.lineMinHeight = lineMinHeight
         self.showAxis = showAxis
@@ -77,6 +83,7 @@ public struct LineChartStyle: ChartStyle {
         self.labelCount = labelCount
         self.showLegends = showLegends
         self.drawing = drawing
+        self.maxY = maxY
     }
     #endif
 }
@@ -128,19 +135,19 @@ public struct LineChartView: View {
         VStack {
             HStack(spacing: 0) {
                 if case let LineChartStyle.Drawing.stroke(width) = style.drawing {
-                    LineChartShape(dataPoints: dataPoints, closePath: false)
+                    LineChartShape(dataPoints: dataPoints, closePath: false, maxY: style.maxY)
                         .stroke(gradient, style: .init(lineWidth: width))
                         .frame(minHeight: style.lineMinHeight)
                         .background(grid)
                 } else {
-                    LineChartShape(dataPoints: dataPoints, closePath: true)
+                    LineChartShape(dataPoints: dataPoints, closePath: true, maxY: style.maxY)
                         .fill(gradient)
                         .frame(minHeight: style.lineMinHeight)
                         .background(grid)
                 }
 
                 if style.showAxis {
-                    AxisView(dataPoints: dataPoints)
+                    AxisView(dataPoints: dataPoints, maxY: style.maxY)
                         .accessibilityHidden(true)
                         .padding(.leading, style.axisLeadingPadding)
                 }
@@ -165,8 +172,10 @@ struct LineChartView_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
             LineChartView(dataPoints: DataPoint.mock)
+                .chartStyle(LineChartStyle(showAxis: false, showLabels: false))
             LineChartView(dataPoints: DataPoint.mock)
-        }.chartStyle(LineChartStyle(showAxis: false, showLabels: false))
+                .chartStyle(LineChartStyle(showAxis: false, showLabels: false, maxY: 320.0))
+        }
     }
 }
 #endif
