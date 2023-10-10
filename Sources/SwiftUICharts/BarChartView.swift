@@ -20,6 +20,10 @@ public struct BarChartStyle: ChartStyle {
     /// The count of labels that should be shown below the chart. Nil value shows all the labels.
     public let labelCount: Int?
     public let showLegends: Bool
+    
+    /// The max value displayed on the y-axis
+    public let maxY: Double?
+    
     /**
      Creates new bar chart style with the following parameters.
 
@@ -38,7 +42,8 @@ public struct BarChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        maxY: Double? = nil
     ) {
         self.barMinHeight = barMinHeight
         self.showAxis = showAxis
@@ -46,6 +51,7 @@ public struct BarChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.maxY = maxY
     }
     #else
     public init(
@@ -54,7 +60,8 @@ public struct BarChartStyle: ChartStyle {
         axisLeadingPadding: CGFloat = 0,
         showLabels: Bool = true,
         labelCount: Int? = nil,
-        showLegends: Bool = true
+        showLegends: Bool = true,
+        maxY: Double? = nil
     ) {
         self.barMinHeight = barMinHeight
         self.showAxis = showAxis
@@ -62,6 +69,7 @@ public struct BarChartStyle: ChartStyle {
         self.showLabels = showLabels
         self.labelCount = labelCount
         self.showLegends = showLegends
+        self.maxY = maxY
     }
     #endif
 }
@@ -72,7 +80,7 @@ public struct BarChartView: View {
 
     let dataPoints: [DataPoint]
     let limit: DataPoint?
-
+    
     /**
      Creates new bar chart view with the following parameters.
 
@@ -120,7 +128,7 @@ public struct BarChartView: View {
         VStack {
             HStack(spacing: 0) {
                 VStack {
-                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: style.showAxis)
+                    BarsView(dataPoints: dataPoints, limit: limit, showAxis: style.showAxis, maxY: style.maxY)
                         .frame(minHeight: style.barMinHeight)
                         .background(grid)
 
@@ -132,7 +140,7 @@ public struct BarChartView: View {
                     }
                 }
                 if style.showAxis {
-                    AxisView(dataPoints: dataPoints)
+                    AxisView(dataPoints: dataPoints, maxY: style.maxY)
                         .fixedSize(horizontal: true, vertical: false)
                         .accessibilityHidden(true)
                         .padding(.leading, style.axisLeadingPadding)
@@ -155,8 +163,10 @@ struct BarChartView_Previews : PreviewProvider {
         let limitBar = DataPoint(value: 100, label: "Trend", legend: limit)
         return HStack(spacing: 0) {
             BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
+                .chartStyle(BarChartStyle(showLabels: false, showLegends: false))
             BarChartView(dataPoints: DataPoint.mock, limit: limitBar)
-        }.chartStyle(BarChartStyle(showLabels: false, showLegends: false))
+                .chartStyle(BarChartStyle(showLabels: false, showLegends: false, maxY: 320.0))
+        }
     }
 }
 #endif
