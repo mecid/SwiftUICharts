@@ -9,20 +9,26 @@ import SwiftUI
 
 struct AxisView: View {
     let dataPoints: [DataPoint]
+    let maxY: Double?
+    
+    private var displayedMax: Double {
+        maxY ?? dataPoints.max()?.endValue ?? 0.0
+    }
+    
+    init(dataPoints: [DataPoint], maxY: Double? = nil) {
+        self.dataPoints = dataPoints
+        self.maxY = maxY
+    }
 
     var body: some View {
         VStack {
-            dataPoints.max().map {
-                Text(String(Int($0.endValue)))
-                    .foregroundColor(.accentColor)
-                    .font(.caption)
-            }
+            Text(String(Int(displayedMax)))
+                .foregroundColor(.accentColor)
+                .font(.caption)
             Spacer()
-            dataPoints.max().map {
-                Text(String(Int($0.endValue / 2)))
-                    .foregroundColor(.accentColor)
-                    .font(.caption)
-            }
+            Text(String(Int(displayedMax / 2)))
+                .foregroundColor(.accentColor)
+                .font(.caption)
             Spacer()
         }
     }
@@ -31,7 +37,11 @@ struct AxisView: View {
 #if DEBUG
 struct AxisView_Previews: PreviewProvider {
     static var previews: some View {
-        AxisView(dataPoints: DataPoint.mock)
+        Group {
+            AxisView(dataPoints: DataPoint.mock)
+            
+            AxisView(dataPoints: DataPoint.mock, maxY: 170.0)
+        }
     }
 }
 #endif
